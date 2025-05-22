@@ -1,7 +1,7 @@
 import {Controller} from '@nestjs/common';
 import {UsersService} from './services/users.service';
 import {MessagePattern, Payload} from "@nestjs/microservices";
-import {API_TOKEN_TYPES, MESSAGE_PATTERNS} from "../../shared/constants";
+import {API_TOKEN_TYPES, USER_MESSAGE_PATTERNS} from "../../shared/constants";
 import {RegisterDto} from "../../shared/dtos/register.dto";
 import {LoginDto} from "../../shared/dtos/login.dto";
 import {UserResource} from "./resources/users.resource";
@@ -20,7 +20,7 @@ export class UsersController extends BaseController{
     super(UserResource,UsersService);
   }
 
-  @MessagePattern(MESSAGE_PATTERNS.AUTH_LOGIN)
+  @MessagePattern(USER_MESSAGE_PATTERNS.LOGIN)
   async login(@Payload() dto: LoginDto) {
     try {
       this.pagination = false;
@@ -49,7 +49,7 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
-  @MessagePattern(MESSAGE_PATTERNS.AUTH_REGISTER)
+  @MessagePattern(USER_MESSAGE_PATTERNS.REGISTER)
   async register(@Payload() data: RegisterDto) {
     try {
       await this.usersService.createUser(data);
@@ -61,7 +61,19 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
-  @MessagePattern(MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
+  @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
+  async verifyRegisterOtp(@Payload() data: VerifyOtpDto) {
+    try {
+      const user = await this.usersService.verifyRegisterOtp(data);
+      this.pagination = false;
+      return this.successResponse(user,"OTP verified successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+
+  @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
   async verifyRegisterOtp(@Payload() data: VerifyOtpDto) {
     try {
       const user = await this.usersService.verifyRegisterOtp(data);
@@ -74,7 +86,7 @@ export class UsersController extends BaseController{
   }
 
 
-  @MessagePattern(MESSAGE_PATTERNS.GET_ALL_USERS)
+  @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
   async getAll(@Payload() query) {
     try {
       const users = await this.usersService.getRecords(query);

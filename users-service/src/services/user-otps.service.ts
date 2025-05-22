@@ -3,7 +3,7 @@ import {InjectModel} from "@nestjs/sequelize";
 import {UserOtp} from "../models/user-otps.model";
 import {GeneralHelper} from "../../../shared/helpers";
 import {BaseService} from "../../../shared/base/base-service";
-import {MESSAGE_PATTERNS, MICRO_SERVICES} from "../../../shared/constants";
+import {USER_MESSAGE_PATTERNS, MICRO_SERVICES} from "../../../shared/constants";
 import {ClientProxy} from "@nestjs/microservices";
 
 
@@ -31,7 +31,7 @@ export class UserOtpService extends BaseService{
             otp: otp
         });
         /* send email */
-        this.mailClient.emit(MESSAGE_PATTERNS.SEND_MAIL,{
+        this.mailClient.emit(USER_MESSAGE_PATTERNS.SEND_MAIL,{
             to: data.email,
             subject: 'Welcome to the App!',
             html: `<p>OTP Code: ${otp}</p>`,
