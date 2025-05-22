@@ -55,6 +55,17 @@ export abstract class BaseService {
         return this.showRecord(id);
     }
 
+    async updateRecordByCondition(condition, payload): Promise<any> {
+        let exceptUpdateField = this.exceptUpdateField();
+        exceptUpdateField.filter(exceptField => {
+            delete payload[exceptField];
+        });
+        await this.repo.update(payload,{
+            where: condition
+        });
+        return this.findRecordByCondition(condition);
+    }
+
     async destroyRecord(id): Promise<{ deleted: boolean }> {
         const result = await this.repo.destroy({ where: { id } });
         return { deleted: !!result };

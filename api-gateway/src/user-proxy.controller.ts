@@ -9,6 +9,8 @@ import {ResetPasswordDto} from "../../shared/dtos/reset-password.dto";
 import {ResetAuthGuard} from "./guards/reset-auth-guard";
 import {ChangePasswordDto} from "../../shared/dtos/change-password.dto";
 import {ApiAuthGuard} from "./guards/api-auth-guard";
+import {SocialLoginDto} from "../../shared/dtos/social-login.dto";
+import {UpdateDeviceTokenDto} from "../../shared/dtos/update-device-token.dto";
 
 @Controller('user')
 export class UserProxyController {
@@ -34,6 +36,17 @@ export class UserProxyController {
             user: req.user
         }
         return this.client.send(USER_MESSAGE_PATTERNS.REGISTER, payload);
+    }
+
+    @Post('social-login')
+    async socialLogin(@Request() req, @Body() dto: SocialLoginDto) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.SOCIAL_LOGIN, payload);
     }
 
     @Post('verify-register-otp')
@@ -133,6 +146,18 @@ export class UserProxyController {
             user: req.user
         }
         return this.client.send(USER_MESSAGE_PATTERNS.DELETE_ACCOUNT, payload);
+    }
+
+    @UseGuards(ApiAuthGuard)
+    @Post('update-device-token')
+    async updateDeviceToken(@Request() req, @Body() dto: UpdateDeviceTokenDto) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.UPDATE_DEVICE_TOKEN, payload);
     }
 
     @Get('all-users')

@@ -164,6 +164,13 @@ export class UsersService extends BaseService{
             user_id: request.user.id
         });
     }
+    async updateDeviceToken(request){
+        await this.userApiTokensService.updateRecordByCondition({
+            user_id: request.user.id
+        },{
+            device_token: request.body.device_token
+        })
+    }
 
     async validateUser(email: string, password: string) {
         const user = await this.findUserByEmail(email);
