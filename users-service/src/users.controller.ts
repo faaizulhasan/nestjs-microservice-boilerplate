@@ -183,6 +183,19 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
+  @MessagePattern(USER_MESSAGE_PATTERNS.LOGOUT)
+  async logout(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      this.request = request;
+      const user = await this.usersService.logout(request.user.id);
+      return this.successResponse(user,"Logout successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
   async getAll(@Payload() request) {

@@ -145,6 +145,11 @@ export class UsersService extends BaseService{
         });
     }
 
+    async logout(user_id){
+        await this.userApiTokensService.destroyRecordByCondition({
+            user_id
+        });
+    }
 
     async validateUser(email: string, password: string) {
         const user = await this.findUserByEmail(email);

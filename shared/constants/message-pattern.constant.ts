@@ -11,5 +11,6 @@ export const USER_MESSAGE_PATTERNS = {
     VERIFY_TOKEN: "verify_token",
     CHANGE_PASSWORD: "change_password",
     UPDATE_PROFILE: "update_profile",
-    PROFILE: "profile"
+    PROFILE: "profile",
+    LOGOUT: "logout"
 };

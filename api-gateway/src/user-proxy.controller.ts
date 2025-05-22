@@ -112,6 +112,17 @@ export class UserProxyController {
         }
         return this.client.send(USER_MESSAGE_PATTERNS.PROFILE, payload);
     }
+    @UseGuards(ApiAuthGuard)
+    @Post('logout')
+    async logout(@Request() req) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.LOGOUT, payload);
+    }
 
     @Get('all-users')
     async getAll(@Request() req) {
