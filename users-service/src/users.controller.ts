@@ -2,15 +2,10 @@ import {Controller} from '@nestjs/common';
 import {UsersService} from './services/users.service';
 import {MessagePattern, Payload} from "@nestjs/microservices";
 import {API_TOKEN_TYPES, USER_MESSAGE_PATTERNS} from "../../shared/constants";
-import {RegisterDto} from "../../shared/dtos/register.dto";
-import {LoginDto} from "../../shared/dtos/login.dto";
 import {UserResource} from "./resources/users.resource";
 import {BaseController} from "../../shared/base/base-controller";
-import {VerifyOtpDto} from "../../shared/dtos/verify-otp.dto";
 import {UserApiTokensService} from "./services/user-api-tokens.service";
 import {UserOtpService} from "./services/user-otps.service";
-import {ResendOtpDto} from "../../shared/dtos/resend-otp.dto";
-import {ResetPasswordDto} from "../../shared/dtos/reset-password.dto";
 
 @Controller()
 export class UsersController extends BaseController{
@@ -23,19 +18,22 @@ export class UsersController extends BaseController{
   }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.LOGIN)
-  async login(@Payload() dto: LoginDto) {
+  async login(@Payload() request) {
     try {
+      this.request = request;
       this.pagination = false;
-      const user = await this.usersService.validateUser(dto.email,dto.password);
+      this.collection = true;
+      let body = request.body;
+      const user = await this.usersService.validateUser(body.email,body.password);
       let data = {
         user_id: user.id,
         type: API_TOKEN_TYPES.ACCESS,
-        device_type: dto.device_type,
-        device_token: dto.device_token
+        device_type: body.device_type,
+        device_token: body.device_token
       }
       if (!user.is_email_verify || !user.is_mobile_verify){
         /* create otp and send mail*/
-        await this.userOtpService.create(dto);
+        await this.userOtpService.create(body);
         return this.sendError("Email or Mobile No is not verified", 428,{
           email: user.email,
           mobile_no: user.mobile_no
@@ -52,11 +50,13 @@ export class UsersController extends BaseController{
     }
   }
   @MessagePattern(USER_MESSAGE_PATTERNS.REGISTER)
-  async register(@Payload() data: RegisterDto) {
+  async register(@Payload() request) {
     try {
-      await this.usersService.createUser(data);
+      let body = request.body;
       this.collection = false;
       this.pagination = false;
+      this.request = request;
+      await this.usersService.createUser(body);
       return this.successResponse({},"User registered successfully")
     }catch (e) {
       console.log(e);
@@ -64,10 +64,13 @@ export class UsersController extends BaseController{
     }
   }
   @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
-  async verifyRegisterOtp(@Payload() data: VerifyOtpDto) {
+  async verifyRegisterOtp(@Payload() request) {
     try {
-      const user = await this.usersService.verifyOtp(data);
       this.pagination = false;
+      this.collection = true;
+      this.request = request;
+      let body = request.body;
+      const user = await this.usersService.verifyOtp(body);
       return this.successResponse(user,"OTP verified successfully")
     }catch (e) {
       console.log(e);
@@ -75,12 +78,15 @@ export class UsersController extends BaseController{
     }
   }
   @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_FORGOT_OTP)
-  async verifyForgotOtp(@Payload() data) {
+  async verifyForgotOtp(@Payload() request) {
     try {
-      data.type = API_TOKEN_TYPES.RESET;
-      const user = await this.usersService.verifyOtp(data);
       this.pagination = false;
       this.collection = false;
+      this.request = request;
+      let data = request.body;
+      data.type = API_TOKEN_TYPES.RESET;
+      const user = await this.usersService.verifyOtp(data);
+
       return this.successResponse({token: user.api_token},"OTP verified successfully")
     }catch (e) {
       console.log(e);
@@ -89,10 +95,12 @@ export class UsersController extends BaseController{
   }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.RESET_PASSWORD)
-  async resetPassword(@Payload() data: ResetPasswordDto) {
+  async resetPassword(@Payload() request) {
     try {
       this.pagination = false;
       this.collection = false;
+      this.request = request;
+      await this.usersService.resetPassword(request);
       return this.successResponse({},"Password Reset successfully")
     }catch (e) {
       console.log(e);
@@ -101,11 +109,14 @@ export class UsersController extends BaseController{
   }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.RESEND_OTP)
-  async resendOtp(@Payload() data: ResendOtpDto) {
+  async resendOtp(@Payload() request) {
     try {
-      const user = await this.usersService.resendOtp(data);
       this.pagination = false;
       this.collection = false;
+      this.request = request;
+      let data = request.body;
+      const user = await this.usersService.resendOtp(data);
+
       return this.successResponse(user,"OTP Send successfully")
     }catch (e) {
       console.log(e);
@@ -129,10 +140,10 @@ export class UsersController extends BaseController{
   }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
-  async getAll(@Payload() query) {
+  async getAll(@Payload() request) {
     try {
-      const users = await this.usersService.getRecords(query);
-      this.extra_payload = {...this.extra_payload,query: query};
+      this.request = request;
+      const users = await this.usersService.getRecords(request);
       return this.successResponse(users,"users retrieved successfully")
     }catch (e) {
       console.log(e);

@@ -99,6 +99,24 @@ export class UsersService extends BaseService{
         /* create otp and send mail*/
         await this.userOtpService.create(data);
     }
+
+    async resetPassword(request){
+        const hashed = await bcrypt.hash(request.body.new_password, 10);
+        /* Update Password */
+        await this.userModel.update({
+            password: hashed,
+        },{
+            where: {
+                id: request.user.id
+            }
+        });
+        /* delete api token */
+        await this.userApiTokensService.destroyRecordByCondition({user_id: request.user.id},true);
+    }
+
+
+
+
     async validateUser(email: string, password: string) {
         const user = await this.findUserByEmail(email);
         if (!user){

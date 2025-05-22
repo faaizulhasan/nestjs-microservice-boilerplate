@@ -1,5 +1,5 @@
 export class UserResource {
-    static toResponse(record) {
+    static toResponse(record,request) {
         return {
             id: record.id,
             user_type: record.user_type,

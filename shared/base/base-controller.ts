@@ -6,6 +6,7 @@ export abstract class BaseController {
     protected readonly service;
     protected collection: boolean = true;
     protected pagination: boolean = true;
+    protected request;
     protected extra_payload = {
         query: {
             page: undefined,
@@ -20,15 +21,15 @@ export abstract class BaseController {
     async successResponse(data: any = null, message = 'Success', status = HttpStatus.OK) {
         if (this.resource && this.collection){
             if (Array.isArray(data)) {
-                data = data.map((item) => this.resource.toResponse(item));
+                data = data.map((item) => this.resource.toResponse(item,this.request));
             }else{
-                data = this.resource.toResponse(data);
+                data = this.resource.toResponse(data,this.request);
             }
         }
         if (this.pagination){
-            const limit = this.extra_payload?.query?.limit ? parseInt(this.extra_payload?.query?.limit) : PER_PAGE_LIMIT;
-            const total = this.extra_payload.query.count;
-            const page =this.extra_payload?.query?.page ? parseInt(this.extra_payload?.query?.page) : 1;
+            const limit = this.request?.query?.limit ? parseInt(this.request?.query?.limit) : PER_PAGE_LIMIT;
+            const total = this.request.count;
+            const page =this.request?.query?.page ? parseInt(this.request?.query?.page) : 1;
             const total_page = Math.ceil(
                 total / limit
             );
