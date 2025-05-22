@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/sequelize";
 import {BaseService} from "../../../shared/base/base-service";
 import {UserApiToken} from "../models/user-api-tokens.model";
 import {JwtService} from "@nestjs/jwt";
+import {API_TOKEN_TYPES} from "../../../shared/constants";
 
 @Injectable()
 export class UserApiTokensService extends BaseService{
@@ -30,5 +31,12 @@ export class UserApiTokensService extends BaseService{
             type: data.type
         });
         return token;
+    }
+    async verifyToken(token, type = API_TOKEN_TYPES.ACCESS){
+        const api_token = await this.findRecordByCondition({
+            api_token: token,
+            type: type
+        });
+        return api_token;
     }
 }

@@ -11,7 +11,7 @@ export abstract class BaseService {
         return rows.length ? rows.map(item => item.toJSON()) : [];
     }
 
-    async findRecordByConditionAll(condition) {
+    async findRecordByCondition(condition) {
         const record = await this.repo.findOne({
             where: condition
         });

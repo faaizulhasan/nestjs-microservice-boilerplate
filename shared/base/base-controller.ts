@@ -49,7 +49,7 @@ export abstract class BaseController {
         }
         return {
             statusCode: status,
-            success: true,
+            status: true,
             message,
             data,
         };
@@ -58,7 +58,7 @@ export abstract class BaseController {
     async sendError(message = 'Something went wrong', status = HttpStatus.BAD_REQUEST, data: any = {}) {
         return {
             statusCode: status,
-            success: false,
+            status: false,
             message,
             data,
         };

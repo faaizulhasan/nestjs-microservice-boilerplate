@@ -44,7 +44,7 @@ export class UsersService extends BaseService{
         return user ? user.toJSON() : user;
     }
 
-    async verifyRegisterOtp(data){
+    async verifyOtp(data){
         const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
         let condition: any = {
             otp: data.otp,
@@ -58,7 +58,7 @@ export class UsersService extends BaseService{
         if (data?.mobile_no){
             condition.mobile_no = data.mobile_no;
         }
-        const user_otp = await this.userOtpService.findRecordByConditionAll(condition);
+        const user_otp = await this.userOtpService.findRecordByCondition(condition);
         if (!user_otp){
             throw new Error("Invalid OTP");
         }
@@ -85,10 +85,19 @@ export class UsersService extends BaseService{
         }
         /* generate api token */
         data.user_id = user.id;
-        data.type = API_TOKEN_TYPES.ACCESS;
+        data.type = data?.type ? data.type : API_TOKEN_TYPES.ACCESS;
         const api_token = await this.userApiTokensService.create(data);
         user.api_token = api_token;
         return user;
+    }
+
+    async resendOtp(data: {email: string}){
+        const user = await this.findUserByEmail(data.email);
+        if (!user){
+            throw new Error("User not found");
+        }
+        /* create otp and send mail*/
+        await this.userOtpService.create(data);
     }
     async validateUser(email: string, password: string) {
         const user = await this.findUserByEmail(email);

@@ -9,6 +9,8 @@ import {BaseController} from "../../shared/base/base-controller";
 import {VerifyOtpDto} from "../../shared/dtos/verify-otp.dto";
 import {UserApiTokensService} from "./services/user-api-tokens.service";
 import {UserOtpService} from "./services/user-otps.service";
+import {ResendOtpDto} from "../../shared/dtos/resend-otp.dto";
+import {ResetPasswordDto} from "../../shared/dtos/reset-password.dto";
 
 @Controller()
 export class UsersController extends BaseController{
@@ -64,7 +66,7 @@ export class UsersController extends BaseController{
   @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
   async verifyRegisterOtp(@Payload() data: VerifyOtpDto) {
     try {
-      const user = await this.usersService.verifyRegisterOtp(data);
+      const user = await this.usersService.verifyOtp(data);
       this.pagination = false;
       return this.successResponse(user,"OTP verified successfully")
     }catch (e) {
@@ -72,19 +74,59 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
-
-  @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
-  async verifyRegisterOtp(@Payload() data: VerifyOtpDto) {
+  @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_FORGOT_OTP)
+  async verifyForgotOtp(@Payload() data) {
     try {
-      const user = await this.usersService.verifyRegisterOtp(data);
+      data.type = API_TOKEN_TYPES.RESET;
+      const user = await this.usersService.verifyOtp(data);
       this.pagination = false;
-      return this.successResponse(user,"OTP verified successfully")
+      this.collection = false;
+      return this.successResponse({token: user.api_token},"OTP verified successfully")
     }catch (e) {
       console.log(e);
       return this.sendError(e.message);
     }
   }
 
+  @MessagePattern(USER_MESSAGE_PATTERNS.RESET_PASSWORD)
+  async resetPassword(@Payload() data: ResetPasswordDto) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      return this.successResponse({},"Password Reset successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+
+  @MessagePattern(USER_MESSAGE_PATTERNS.RESEND_OTP)
+  async resendOtp(@Payload() data: ResendOtpDto) {
+    try {
+      const user = await this.usersService.resendOtp(data);
+      this.pagination = false;
+      this.collection = false;
+      return this.successResponse(user,"OTP Send successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+
+  @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_TOKEN)
+  async verifyAuthToken(@Payload() data: {token: string, type: string}) {
+    try {
+      const verifyToken = await this.userApiTokensService.verifyToken(data.token,data.type);
+      if (!verifyToken){
+        return false;
+      }
+      const user = await this.usersService.showRecord(verifyToken.user_id);
+      return user;
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
   async getAll(@Payload() query) {
