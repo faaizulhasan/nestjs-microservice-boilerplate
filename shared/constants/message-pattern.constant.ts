@@ -8,5 +8,6 @@ export const USER_MESSAGE_PATTERNS = {
     VERIFY_FORGOT_OTP: "verify_forgot_otp",
     RESEND_OTP: "resend_otp",
     RESET_PASSWORD: "reset_password",
-    VERIFY_TOKEN: "verify_token"
+    VERIFY_TOKEN: "verify_token",
+    CHANGE_PASSWORD: "change_password"
 };

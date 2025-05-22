@@ -49,6 +49,7 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
+
   @MessagePattern(USER_MESSAGE_PATTERNS.REGISTER)
   async register(@Payload() request) {
     try {
@@ -63,6 +64,7 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
+
   @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_REGISTER_OTP)
   async verifyRegisterOtp(@Payload() request) {
     try {
@@ -77,6 +79,7 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
+
   @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_FORGOT_OTP)
   async verifyForgotOtp(@Payload() request) {
     try {
@@ -118,6 +121,21 @@ export class UsersController extends BaseController{
       const user = await this.usersService.resendOtp(data);
 
       return this.successResponse(user,"OTP Send successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+
+
+  @MessagePattern(USER_MESSAGE_PATTERNS.CHANGE_PASSWORD)
+  async changePassword(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      this.request = request;
+      await this.usersService.changePassword(request);
+      return this.successResponse({},"Password Updated successfully")
     }catch (e) {
       console.log(e);
       return this.sendError(e.message);

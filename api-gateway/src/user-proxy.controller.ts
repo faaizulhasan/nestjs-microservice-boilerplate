@@ -7,6 +7,8 @@ import {VerifyOtpDto} from "../../shared/dtos/verify-otp.dto";
 import {ResendOtpDto} from "../../shared/dtos/resend-otp.dto";
 import {ResetPasswordDto} from "../../shared/dtos/reset-password.dto";
 import {ResetAuthGuard} from "./guards/reset-auth-guard";
+import {ChangePasswordDto} from "../../shared/dtos/change-password.dto";
+import {ApiAuthGuard} from "./guards/api-auth-guard";
 
 @Controller('user')
 export class UserProxyController {
@@ -74,6 +76,18 @@ export class UserProxyController {
             user: req.user
         }
         return this.client.send(USER_MESSAGE_PATTERNS.RESEND_OTP, payload);
+    }
+
+    @UseGuards(ApiAuthGuard)
+    @Post('change-password')
+    async changePassword(@Request() req, @Body() dto: ChangePasswordDto) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.CHANGE_PASSWORD, payload);
     }
     @Get('all-users')
     async getAll(@Request() req) {

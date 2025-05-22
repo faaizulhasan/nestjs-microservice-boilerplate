@@ -114,7 +114,22 @@ export class UsersService extends BaseService{
         await this.userApiTokensService.destroyRecordByCondition({user_id: request.user.id},true);
     }
 
-
+    async changePassword(request){
+        const {current_password, new_password} = request.body;
+        const isMatch = await bcrypt.compare(current_password, request.user.password);
+        if (!isMatch){
+            throw new Error("Current password doesn't match");
+        }
+        const hashed = await bcrypt.hash(new_password, 10);
+        /* Update Password */
+        await this.userModel.update({
+            password: hashed,
+        },{
+            where: {
+                id: request.user.id
+            }
+        });
+    }
 
 
     async validateUser(email: string, password: string) {
