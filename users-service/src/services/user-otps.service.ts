@@ -1,9 +1,9 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {UserOtp} from "../models/user-otps.model";
-import {GeneralHelper} from "../../../shared/helpers";
+import {generateOTP} from "../../../shared/helpers";
 import {BaseService} from "../../../shared/base/base-service";
-import {USER_MESSAGE_PATTERNS, MICRO_SERVICES} from "../../../shared/constants";
+import {MICRO_SERVICES, USER_MESSAGE_PATTERNS} from "../../../shared/constants";
 import {ClientProxy} from "@nestjs/microservices";
 
 
@@ -25,7 +25,7 @@ export class UserOtpService extends BaseService{
             force: true
         });
         /* create otp */
-        const otp = GeneralHelper.generateOTP();
+        const otp = generateOTP();
         const user_otp =  await this.userOtpModel.create({
             email: data.email,
             otp: otp

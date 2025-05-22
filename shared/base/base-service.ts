@@ -2,7 +2,12 @@ import {PER_PAGE_LIMIT} from "../constants";
 
 export abstract class BaseService {
     protected constructor(protected readonly repo: any) {}
-
+    protected showColumns(): string[] {
+        return [];
+    }
+    protected exceptUpdateField(): string[] {
+        return [];
+    }
     async createRecord(dto) {
         return this.repo.create(dto);
     }
@@ -15,6 +20,7 @@ export abstract class BaseService {
         const is_paginate = request?.query?.is_paginate && request?.query?.is_paginate == "false" ? false : true;
 
         let query = {
+            attributes: this.showColumns().length ? this.showColumns() : undefined,
             ...(is_paginate && { limit: limit, offset: page * limit }),
             order: [[orderBy,order]]
         }
@@ -32,11 +38,20 @@ export abstract class BaseService {
     }
 
     async showRecord(id): Promise<any> {
-        return this.repo.findOne({ where: { id } });
+        const record = await this.repo.findOne({ where: { id } });
+        return record ? record.toJSON() : record;
     }
 
-    async updateRecord(id, dto): Promise<any> {
-        await this.repo.update(id, dto);
+    async updateRecord(id, payload): Promise<any> {
+        let exceptUpdateField = this.exceptUpdateField();
+        exceptUpdateField.filter(exceptField => {
+            delete payload[exceptField];
+        });
+        await this.repo.update(payload,{
+            where: {
+                id: id
+            }
+        });
         return this.showRecord(id);
     }
 

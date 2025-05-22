@@ -1,5 +1,6 @@
 import {Column, DataType, Model, Table} from 'sequelize-typescript';
 import {UserCreationAttributes, UserInterface} from "../../../shared/interfaces/user.interface";
+import {getFileUrl} from "../../../shared/helpers";
 
 @Table({
     tableName: 'users',
@@ -39,7 +40,6 @@ export class User extends Model<UserInterface,UserCreationAttributes> {
     })
     mobile_no: string;
 
-
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -57,6 +57,16 @@ export class User extends Model<UserInterface,UserCreationAttributes> {
         allowNull: true
     })
     coordinates: [number,number];
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true,
+        get(this) {
+            const rawValue = this.getDataValue('image_url');
+            return rawValue ? getFileUrl(rawValue) : null;
+        },
+    })
+    image_url: string;
 
     @Column({
         type: DataType.STRING(200),

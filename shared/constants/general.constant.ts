@@ -1,3 +1,4 @@
+export const BASE_URL = "http://localhost:3000/";
 export const MICRO_SERVICES = {
     AUTH_SERVICE: "AUTH_SERVICE",
     MAILER_SERVICE: "MAILER_SERVICE",

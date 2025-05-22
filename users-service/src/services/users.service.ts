@@ -7,18 +7,32 @@ import {UserOtpService} from "./user-otps.service";
 import {BaseService} from "../../../shared/base/base-service";
 import {Op} from "sequelize";
 import {UserApiTokensService} from "./user-api-tokens.service";
-import {JwtService} from '@nestjs/jwt';
+import {extractFields} from "../../../shared/helpers";
 
 @Injectable()
 export class UsersService extends BaseService{
-    protected readonly jwtService;
     constructor(
         @InjectModel(User) private userModel: any,
         private readonly userOtpService: UserOtpService,
         private readonly userApiTokensService: UserApiTokensService
     ) {
         super(User);
-        this.jwtService = JwtService;
+    }
+    showColumns(): string[] {
+        return ["id","user_type","first_name","last_name","email","mobile_no","password","address","coordinates","stripe_customer_id","connect_account_id","transfer_capabilities","login_type","is_activated","is_blocked","push_notification"];
+    }
+    getFields() {
+        return ["user_type","first_name","last_name","email","mobile_no","password","image_url","address","coordinates","push_notification"]
+    };
+    exceptUpdateField(): string[] {
+        return ["id","user_type","email","password","is_activated","is_blocked","status","createdAt","updatedAt","deletedAt"];
+    };
+    includeShow(){
+        return [];
+    }
+
+    includeIndex(){
+        return [];
     }
 
     async createUser(data){
@@ -28,7 +42,7 @@ export class UsersService extends BaseService{
             password: hashed,
             user_type: ROLES.USER
         };
-        const user = await this.userModel.create(userPayload);
+        const user = await this.userModel.create(extractFields(userPayload, this.getFields()));
         /* create otp and send mail*/
         await this.userOtpService.create(data);
 

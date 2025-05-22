@@ -157,6 +157,33 @@ export class UsersController extends BaseController{
     }
   }
 
+  @MessagePattern(USER_MESSAGE_PATTERNS.UPDATE_PROFILE)
+  async updateProfile(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = true;
+      this.request = request;
+      const user = await this.usersService.updateRecord(request.user.id,request.body);
+      return this.successResponse(user,"User Updated successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+  @MessagePattern(USER_MESSAGE_PATTERNS.PROFILE)
+  async profile(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = true;
+      this.request = request;
+      const user = await this.usersService.showRecord(request.user.id);
+      return this.successResponse(user,"User retrieved successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+
   @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
   async getAll(@Payload() request) {
     try {

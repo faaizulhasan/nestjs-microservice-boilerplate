@@ -9,6 +9,7 @@ export class UserResource {
             mobile_no: record.mobile_no,
             address: record.address,
             coordinates: record.coordinates,
+            image_url: record.image_url,
             stripe_customer_id: record.stripe_customer_id,
             connect_account_id: record.connect_account_id,
             transfer_capabilities: record.transfer_capabilities,

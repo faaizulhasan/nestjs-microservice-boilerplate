@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Inject, Post, Request, UseGuards} from "@nestjs/common";
+import {Body, Controller, Get, Inject, Patch, Post, Request, UseGuards} from "@nestjs/common";
 import {ClientProxy} from "@nestjs/microservices";
 import {LoginDto} from "../../shared/dtos/login.dto";
 import {RegisterDto} from "../../shared/dtos/register.dto";
@@ -89,6 +89,30 @@ export class UserProxyController {
         }
         return this.client.send(USER_MESSAGE_PATTERNS.CHANGE_PASSWORD, payload);
     }
+
+    @UseGuards(ApiAuthGuard)
+    @Patch('update-profile')
+    async updateProfile(@Request() req, @Body() body) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.UPDATE_PROFILE, payload);
+    }
+    @UseGuards(ApiAuthGuard)
+    @Get('profile')
+    async profile(@Request() req) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.PROFILE, payload);
+    }
+
     @Get('all-users')
     async getAll(@Request() req) {
         let payload = {
