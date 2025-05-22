@@ -1,0 +1,17 @@
+export const MICRO_SERVICES = {
+    AUTH_SERVICE: "AUTH_SERVICE",
+    MAILER_SERVICE: "MAILER_SERVICE",
+    USERS_SERVICE: "USERS_SERVICE"
+};
+export const ROLES = {
+    ADMIN: "ADMIN",
+    USER: "USER",
+    FUL_FILLER: "FUL_FILLER"
+}
+export const API_TOKEN_TYPES = {
+    ACCESS: "ACCESS",
+    RESET: 'RESET'
+}
+export const PER_PAGE_LIMIT = 20;
+
+export const JWT_SECRET = "Drop%N%Secret@123$";
