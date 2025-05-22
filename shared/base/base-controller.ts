@@ -55,12 +55,12 @@ export abstract class BaseController {
         };
     }
 
-    async sendError(message = 'Something went wrong', status = HttpStatus.BAD_REQUEST, errors: any = null) {
+    async sendError(message = 'Something went wrong', status = HttpStatus.BAD_REQUEST, data: any = {}) {
         return {
             statusCode: status,
             success: false,
             message,
-            errors,
+            data,
         };
     }
 

@@ -34,7 +34,7 @@ export class UserOtpService extends BaseService{
         this.mailClient.emit(MESSAGE_PATTERNS.SEND_MAIL,{
             to: data.email,
             subject: 'Welcome to the App!',
-            html: `<h2>Welcome, ${data.first_name}!</h2><br/><p>OTP Code: ${otp}</p>`,
+            html: `<p>OTP Code: ${otp}</p>`,
         });
         return user_otp;
     }

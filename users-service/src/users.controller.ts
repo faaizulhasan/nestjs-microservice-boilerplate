@@ -8,12 +8,14 @@ import {UserResource} from "./resources/users.resource";
 import {BaseController} from "../../shared/base/base-controller";
 import {VerifyOtpDto} from "../../shared/dtos/verify-otp.dto";
 import {UserApiTokensService} from "./services/user-api-tokens.service";
+import {UserOtpService} from "./services/user-otps.service";
 
 @Controller()
 export class UsersController extends BaseController{
   constructor(
       private readonly usersService: UsersService,
       private readonly userApiTokensService: UserApiTokensService,
+      private readonly userOtpService: UserOtpService,
   ) {
     super(UserResource,UsersService);
   }
@@ -28,6 +30,14 @@ export class UsersController extends BaseController{
         type: API_TOKEN_TYPES.ACCESS,
         device_type: dto.device_type,
         device_token: dto.device_token
+      }
+      if (!user.is_email_verify || !user.is_mobile_verify){
+        /* create otp and send mail*/
+        await this.userOtpService.create(dto);
+        return this.sendError("Email or Mobile No is not verified", 428,{
+          email: user.email,
+          mobile_no: user.mobile_no
+        });
       }
       data.user_id = user.id;
       data.type = API_TOKEN_TYPES.ACCESS;
