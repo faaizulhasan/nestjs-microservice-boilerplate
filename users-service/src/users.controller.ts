@@ -197,6 +197,20 @@ export class UsersController extends BaseController{
     }
   }
 
+  @MessagePattern(USER_MESSAGE_PATTERNS.DELETE_ACCOUNT)
+  async deleteAccount(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      this.request = request;
+      const user = await this.usersService.deleteAccount(request);
+      return this.successResponse(user,"Account Deleted successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+
   @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
   async getAll(@Payload() request) {
     try {

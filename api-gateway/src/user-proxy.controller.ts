@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Inject, Patch, Post, Request, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Inject, Patch, Post, Request, UseGuards} from "@nestjs/common";
 import {ClientProxy} from "@nestjs/microservices";
 import {LoginDto} from "../../shared/dtos/login.dto";
 import {RegisterDto} from "../../shared/dtos/register.dto";
@@ -122,6 +122,17 @@ export class UserProxyController {
             user: req.user
         }
         return this.client.send(USER_MESSAGE_PATTERNS.LOGOUT, payload);
+    }
+    @UseGuards(ApiAuthGuard)
+    @Delete('delete-account')
+    async deleteAccount(@Request() req) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(USER_MESSAGE_PATTERNS.DELETE_ACCOUNT, payload);
     }
 
     @Get('all-users')

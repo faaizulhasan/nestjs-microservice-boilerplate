@@ -150,6 +150,20 @@ export class UsersService extends BaseService{
             user_id
         });
     }
+    async deleteAccount(request){
+       await this.userModel.update({
+           email: `${request.user.email}-${new Date().getTime()}`,
+           mobile_no: `${request.user.mobile_no}-${new Date().getTime()}`
+       },{
+           where: {
+               id: request.user.id
+           }
+       });
+       /* delete api tokens */
+        await this.userApiTokensService.destroyRecordByCondition({
+            user_id: request.user.id
+        });
+    }
 
     async validateUser(email: string, password: string) {
         const user = await this.findUserByEmail(email);

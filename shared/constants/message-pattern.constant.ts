@@ -12,5 +12,6 @@ export const USER_MESSAGE_PATTERNS = {
     CHANGE_PASSWORD: "change_password",
     UPDATE_PROFILE: "update_profile",
     PROFILE: "profile",
-    LOGOUT: "logout"
+    LOGOUT: "logout",
+    DELETE_ACCOUNT: "delete_account"
 };
