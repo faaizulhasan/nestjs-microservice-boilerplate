@@ -13,5 +13,7 @@ export const USER_MESSAGE_PATTERNS = {
     UPDATE_PROFILE: "update_profile",
     PROFILE: "profile",
     LOGOUT: "logout",
-    DELETE_ACCOUNT: "delete_account"
+    DELETE_ACCOUNT: "delete_account",
+    SOCIAL_LOGIN: "social_login",
+    UPDATE_DEVICE_TOKEN: "update_device_token"
 };

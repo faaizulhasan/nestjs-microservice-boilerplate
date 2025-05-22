@@ -210,6 +210,19 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
+  @MessagePattern(USER_MESSAGE_PATTERNS.UPDATE_DEVICE_TOKEN)
+  async updateDeviceToken(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      this.request = request;
+      await this.usersService.updateDeviceToken(request);
+      return this.successResponse({},"Device Token Updated successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.GET_ALL_USERS)
   async getAll(@Payload() request) {
