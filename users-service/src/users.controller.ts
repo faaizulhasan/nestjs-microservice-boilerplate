@@ -40,6 +40,12 @@ export class UsersController extends BaseController{
           mobile_no: user.mobile_no
         });
       }
+      if(user.is_blocked){
+        throw new Error("Account is blocked");
+      } 
+      if(!user.is_activated){
+        throw new Error("Account is not activated");
+      } 
       data.user_id = user.id;
       data.type = API_TOKEN_TYPES.ACCESS;
       const api_token = await this.userApiTokensService.create(data);
@@ -73,6 +79,12 @@ export class UsersController extends BaseController{
       this.pagination = false;
       this.request = request;
       const user = await this.usersService.socialLogin(body);
+      if(user.is_blocked){
+        throw new Error("Account is blocked");
+      } 
+      if(!user.is_activated){
+        throw new Error("Account is not activated");
+      } 
       return this.successResponse(user,"Social Logged-In successfully")
     }catch (e) {
       console.log(e);

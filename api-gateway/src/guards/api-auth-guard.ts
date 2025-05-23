@@ -30,6 +30,12 @@ export class ApiAuthGuard implements CanActivate {
             if (!user){
                 throw new CustomUnauthorizedException("Invalid Token");
             }
+            if(user.is_blocked){
+                throw new CustomUnauthorizedException("Account is blocked");
+            }
+            if(!user.is_verified){
+                throw new CustomUnauthorizedException("Account is not activated");
+            }
             request['user'] = user;
         } catch(err) {
             throw new CustomUnauthorizedException(err.message);
