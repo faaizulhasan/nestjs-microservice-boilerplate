@@ -11,6 +11,7 @@ import {ChangePasswordDto} from "../../shared/dtos/change-password.dto";
 import {ApiAuthGuard} from "./guards/api-auth-guard";
 import {SocialLoginDto} from "../../shared/dtos/social-login.dto";
 import {UpdateDeviceTokenDto} from "../../shared/dtos/update-device-token.dto";
+import { response } from "express";
 
 @Controller('user')
 export class UserProxyController {

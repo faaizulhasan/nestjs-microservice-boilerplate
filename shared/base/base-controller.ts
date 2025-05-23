@@ -1,35 +1,29 @@
-import {HttpStatus} from "@nestjs/common";
-import {PER_PAGE_LIMIT} from "../constants";
-
+import { HttpStatus, BadRequestException } from "@nestjs/common";
+import { PER_PAGE_LIMIT } from "../constants";
+import { RpcException } from "@nestjs/microservices";
 export abstract class BaseController {
     protected readonly resource;
     protected readonly service;
     protected collection: boolean = true;
     protected pagination: boolean = true;
     protected request;
-    protected extra_payload = {
-        query: {
-            page: undefined,
-            limit: undefined,
-            count: 0
-        }
-    };
+
     protected constructor(Resource, Service) {
         this.resource = Resource;
         this.service = Service;
     }
     async successResponse(data: any = null, message = 'Success', status = HttpStatus.OK) {
-        if (this.resource && this.collection){
+        if (this.resource && this.collection) {
             if (Array.isArray(data)) {
-                data = data.map((item) => this.resource.toResponse(item,this.request));
-            }else{
-                data = this.resource.toResponse(data,this.request);
+                data = data.map((item) => this.resource.toResponse(item, this.request));
+            } else {
+                data = this.resource.toResponse(data, this.request);
             }
         }
-        if (this.pagination){
+        if (this.pagination) {
             const limit = this.request?.query?.limit ? parseInt(this.request?.query?.limit) : PER_PAGE_LIMIT;
             const total = this.request.count;
-            const page =this.request?.query?.page ? parseInt(this.request?.query?.page) : 1;
+            const page = this.request?.query?.page ? parseInt(this.request?.query?.page) : 1;
             const total_page = Math.ceil(
                 total / limit
             );
@@ -57,12 +51,7 @@ export abstract class BaseController {
     }
 
     async sendError(message = 'Something went wrong', status = HttpStatus.BAD_REQUEST, data: any = {}) {
-        return {
-            statusCode: status,
-            status: false,
-            message,
-            data,
-        };
+        throw new RpcException(new BadRequestException(message,{cause:status}));
     }
 
 }

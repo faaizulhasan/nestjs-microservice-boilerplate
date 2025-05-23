@@ -58,7 +58,27 @@ export class UsersService extends BaseService{
             }
         });
 
-        if (!user) {
+        if (user) {
+            // Update existing user's name and image if provided
+            const updateData: any = {};
+            
+            if (data.name) {
+                updateData.first_name = data.name.split(' ')[0] || '';
+                updateData.last_name = data.name.split(' ').slice(1).join(' ') || '';
+            }
+            
+            if (data.image_url) {
+                updateData.image_url = data.image_url;
+            }
+
+            if (Object.keys(updateData).length > 0) {
+                await this.userModel.update(updateData, {
+                    where: { id: user.id }
+                });
+                // Refresh user data
+                user = await this.userModel.findByPk(user.id);
+            }
+        } else {
             // If user doesn't exist, create a new user
             const userPayload = {
                 email: data.email,
