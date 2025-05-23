@@ -21,3 +21,4 @@ export const LOGIN_TYPE = {
 export const PER_PAGE_LIMIT = 20;
 
 export const JWT_SECRET = "Drop%N%Secret@123$";
+export const JWT_EXPIRY = "1d";

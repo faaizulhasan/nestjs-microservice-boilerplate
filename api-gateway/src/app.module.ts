@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common';
 import {AppService} from './app.service';
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import {UserProxyController} from "./user-proxy.controller";
-import {JWT_SECRET, MICRO_SERVICES, REDIS_CREDENTIALS} from "../../shared/constants";
+import {JWT_EXPIRY, JWT_SECRET, MICRO_SERVICES, REDIS_CREDENTIALS} from "../../shared/constants";
 import {JwtModule} from "@nestjs/jwt";
 
 @Module({
@@ -16,7 +16,7 @@ import {JwtModule} from "@nestjs/jwt";
     ]),
     JwtModule.register({
       secret: JWT_SECRET,
-      signOptions: { expiresIn: '1d' },
+      signOptions: { expiresIn: JWT_EXPIRY },
     }),
   ],
   controllers: [UserProxyController],
