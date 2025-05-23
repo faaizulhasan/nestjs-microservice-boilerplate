@@ -36,7 +36,7 @@ export class User extends Model<UserInterface,UserCreationAttributes> {
 
     @Column({
         type: DataType.STRING(100),
-        allowNull: false
+        allowNull: true
     })
     mobile_no: string;
 

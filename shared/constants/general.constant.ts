@@ -13,6 +13,11 @@ export const API_TOKEN_TYPES = {
     ACCESS: "ACCESS",
     RESET: 'RESET'
 }
+
+export const LOGIN_TYPE = {
+    CUSTOM: "custom",
+    SOCIAL: "social"
+}
 export const PER_PAGE_LIMIT = 20;
 
 export const JWT_SECRET = "Drop%N%Secret@123$";

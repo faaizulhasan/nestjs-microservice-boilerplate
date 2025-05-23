@@ -6,6 +6,7 @@ import {UserResource} from "./resources/users.resource";
 import {BaseController} from "../../shared/base/base-controller";
 import {UserApiTokensService} from "./services/user-api-tokens.service";
 import {UserOtpService} from "./services/user-otps.service";
+import { log } from 'console';
 
 @Controller()
 export class UsersController extends BaseController{
@@ -59,6 +60,20 @@ export class UsersController extends BaseController{
       this.request = request;
       await this.usersService.createUser(body);
       return this.successResponse({},"User registered successfully")
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }
+  @MessagePattern(USER_MESSAGE_PATTERNS.SOCIAL_LOGIN)
+  async socialLogin(@Payload() request) {
+    try {
+      let body = request.body;
+      this.collection = true;
+      this.pagination = false;
+      this.request = request;
+      const user = await this.usersService.socialLogin(body);
+      return this.successResponse(user,"Social Logged-In successfully")
     }catch (e) {
       console.log(e);
       return this.sendError(e.message);

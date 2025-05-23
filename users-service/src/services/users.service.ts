@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "../models/users.model";
 import * as bcrypt from 'bcrypt';
-import {API_TOKEN_TYPES, ROLES} from "../../../shared/constants";
+import {API_TOKEN_TYPES, LOGIN_TYPE, ROLES} from "../../../shared/constants";
 import {UserOtpService} from "./user-otps.service";
 import {BaseService} from "../../../shared/base/base-service";
 import {Op} from "sequelize";
@@ -22,7 +22,7 @@ export class UsersService extends BaseService{
         return ["id","user_type","first_name","last_name","email","mobile_no","password","address","coordinates","stripe_customer_id","connect_account_id","transfer_capabilities","login_type","is_activated","is_blocked","push_notification"];
     }
     getFields() {
-        return ["user_type","first_name","last_name","email","mobile_no","password","image_url","address","coordinates","push_notification"]
+        return ["user_type","first_name","last_name","email","mobile_no","password","image_url","address","coordinates","push_notification","login_typr"]
     };
     exceptUpdateField(): string[] {
         return ["id","user_type","email","password","is_activated","is_blocked","status","createdAt","updatedAt","deletedAt"];
@@ -40,13 +40,61 @@ export class UsersService extends BaseService{
         const userPayload = {
             ...data,
             password: hashed,
-            user_type: ROLES.USER
+            user_type: ROLES.USER,
+            login_type: LOGIN_TYPE.CUSTOM
         };
         const user = await this.userModel.create(extractFields(userPayload, this.getFields()));
         /* create otp and send mail*/
         await this.userOtpService.create(data);
 
         return user ? user.toJSON() : user;
+    }
+    async socialLogin(data) {
+        // Check if user exists with the platform_id and platform_type
+        let user = await this.userModel.findOne({
+            where: {
+                platform_id: data.platform_id,
+                platform_type: data.platform_type
+            }
+        });
+
+        if (!user) {
+            // If user doesn't exist, create a new user
+            const userPayload = {
+                email: data.email,
+                first_name: data.name?.split(' ')[0] || '',
+                last_name: data.name?.split(' ').slice(1).join(' ') || '',
+                password: await bcrypt.hash(Math.random().toString(36), 10), // Generate random password
+                user_type: ROLES.USER,
+                login_type: LOGIN_TYPE.SOCIAL,
+                platform_type: data.platform_type,
+                platform_id: data.platform_id,
+                is_email_verify: data.email ? 1 : 0,
+                email_verifyAt: data.email ? new Date() : null,
+                is_mobile_verify: data.email ? 1 : 0,
+                mobile_verifyAt: data.email ? new Date() : null,
+                is_activated: 1,
+                image_url: data?.image_url ? data?.image_url : null
+            };
+
+            user = await this.userModel.create(userPayload);
+        }
+
+        // Generate API token
+        const tokenData = {
+            user_id: user.id,
+            device_type: data.device_type,
+            device_token: data.device_token,
+            type: API_TOKEN_TYPES.ACCESS
+        };
+
+        const api_token = await this.userApiTokensService.create(tokenData);
+        
+        // Return user with token
+        const userData = user.toJSON();
+        userData.api_token = api_token;
+        
+        return userData;
     }
 
     async findUserByEmail(email: string){

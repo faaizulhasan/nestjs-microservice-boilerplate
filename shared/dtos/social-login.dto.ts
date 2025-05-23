@@ -1,12 +1,13 @@
-import {IsEmail, IsIn, IsNotEmpty, IsString} from 'class-validator';
+import {IsEmail, IsIn, IsNotEmpty, IsString, IsOptional} from 'class-validator';
 
 export class SocialLoginDto {
+    @IsOptional()
     @IsEmail()
     email?: string;
 
+    @IsOptional()
     @IsString()
-    @IsNotEmpty()
-    name: string;
+    name?: string;
 
     @IsString()
     @IsIn(["google","facebook","instagram"])
