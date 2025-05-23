@@ -6,7 +6,7 @@ import {REDIS_CREDENTIALS} from "../../shared/constants";
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(MailerModule, {
     transport: Transport.REDIS,
-    options: { port: REDIS_CREDENTIALS.PORT, host: REDIS_CREDENTIALS.HOST }
+    options: REDIS_CREDENTIALS
   });
 
   await app.listen();

@@ -1,4 +1,4 @@
 export const REDIS_CREDENTIALS = {
-    HOST: "localhost",
-    PORT: 6379
+    host: "localhost",
+    port: 6379
 };

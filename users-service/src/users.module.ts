@@ -18,7 +18,7 @@ import {JwtModule} from "@nestjs/jwt";
       {
         name: MICRO_SERVICES.MAILER_SERVICE,
         transport: Transport.REDIS,
-        options: { port: REDIS_CREDENTIALS.PORT, host: REDIS_CREDENTIALS.HOST }
+        options: REDIS_CREDENTIALS
       }
     ]),
     SequelizeModule.forRoot({
