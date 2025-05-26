@@ -8,6 +8,7 @@ import {BaseService} from "../../../shared/base/base-service";
 import {Op} from "sequelize";
 import {UserApiTokensService} from "./user-api-tokens.service";
 import {extractFields} from "../../../shared/helpers";
+import { log } from 'console';
 
 @Injectable()
 export class UsersService extends BaseService{
@@ -19,10 +20,10 @@ export class UsersService extends BaseService{
         super(User);
     }
     showColumns(): string[] {
-        return ["id","user_type","first_name","last_name","email","mobile_no","password","address","coordinates","stripe_customer_id","connect_account_id","transfer_capabilities","login_type","is_activated","is_blocked","push_notification"];
+        return ["id","user_type","first_name","last_name","email","mobile_no","password","address","country","city","state","zipcode","latitude","longitude","stripe_customer_id","connect_account_id","transfer_capabilities","login_type","is_activated","is_blocked","push_notification","hide_name","createdAt"];
     }
     getFields() {
-        return ["user_type","first_name","last_name","email","mobile_no","password","image_url","address","coordinates","push_notification","login_typr"]
+        return ["user_type","first_name","last_name","email","mobile_no","password","image_url","address","country","city","state","zipcode","latitude","longitude","stripe_customer_id","connect_account_id","transfer_capabilities","login_type","is_activated","is_blocked","push_notification","hide_name","login_typr"]
     };
     exceptUpdateField(): string[] {
         return ["id","user_type","email","password","is_activated","is_blocked","status","createdAt","updatedAt","deletedAt"];
@@ -43,6 +44,7 @@ export class UsersService extends BaseService{
             user_type: ROLES.USER,
             login_type: LOGIN_TYPE.CUSTOM
         };
+     
         const user = await this.userModel.create(extractFields(userPayload, this.getFields()));
         /* create otp and send mail*/
         await this.userOtpService.create(data);

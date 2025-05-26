@@ -33,7 +33,7 @@ export class ApiAuthGuard implements CanActivate {
             if(user.is_blocked){
                 throw new CustomUnauthorizedException("Account is blocked");
             }
-            if(!user.is_verified){
+            if(!user.is_activated){
                 throw new CustomUnauthorizedException("Account is not activated");
             }
             request['user'] = user;

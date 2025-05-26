@@ -51,12 +51,42 @@ export class User extends Model<UserInterface,UserCreationAttributes> {
         allowNull: true,
     })
     address: string;
+   
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true,
+    })
+    country: string;
 
     @Column({
-        type: DataType.GEOMETRY('POINT'),
+        type: DataType.STRING(100),
+        allowNull: true,
+    })
+    city: string;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true,
+    })
+    state: string;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true,
+    })
+    zipcode: string;
+
+    @Column({
+        type: DataType.STRING(100),
         allowNull: true
     })
-    coordinates: [number,number];
+    latitude: string;
+
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: true
+    })
+    longitude: string;
 
     @Column({
         type: DataType.STRING,
@@ -159,4 +189,11 @@ export class User extends Model<UserInterface,UserCreationAttributes> {
         defaultValue: 1
     })
     push_notification: number;
+   
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0
+    })
+    hide_name: number;
 }
