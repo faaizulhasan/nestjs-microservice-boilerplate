@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // Controllers
 import { UsersController } from './users.controller';
@@ -19,7 +20,6 @@ import { Role } from './models/roles.model';
 
 // Constants
 import {
-  DATABASE_CREDENTIALS,
   JWT_EXPIRY,
   JWT_SECRET,
   MICRO_SERVICES,
@@ -28,6 +28,11 @@ import {
 
 @Module({
   imports: [
+    //import .env file
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    }),
     // Redis Microservice Client
     ClientsModule.register([
       {
@@ -37,16 +42,20 @@ import {
       },
     ]),
 
-    // Sequelize Configuration
-    SequelizeModule.forRoot({
-      dialect: 'mysql',
-      host: DATABASE_CREDENTIALS.DB_HOST,
-      port: DATABASE_CREDENTIALS.DB_PORT,
-      username: DATABASE_CREDENTIALS.DB_USER,
-      password: DATABASE_CREDENTIALS.DB_PASSWORD,
-      database: DATABASE_CREDENTIALS.DB_NAME,
-      autoLoadModels: true,
-      synchronize: true,
+     // Sequelize Configuration
+     SequelizeModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        dialect: 'mysql',
+        host: config.get<string>('DB_HOST'),
+        port: config.get<number>('DB_PORT'),
+        username: config.get<string>('DB_USER'),
+        password: config.get<string>('DB_PASSWORD'),
+        database: config.get<string>('DB_NAME'),
+        autoLoadModels: true,
+        synchronize: true,
+      }),
     }),
 
     // Sequelize Models
