@@ -31,9 +31,10 @@ export abstract class BaseService {
         return rows.length ? rows.map(item => item.toJSON()) : [];
     }
 
-    async findRecordByCondition(condition) {
+    async findRecordByCondition(condition, order = [['id','DESC']]) {
         const record = await this.repo.findOne({
-            where: condition
+            where: condition,
+            order: order
         });
         return record ? record.toJSON() : record;
     }

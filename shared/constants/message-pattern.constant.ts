@@ -4,6 +4,8 @@ export const USER_MESSAGE_PATTERNS = {
     REGISTER: "auth_register",
     CREATE_USER: "create_user",
     GET_ALL_USERS: "get_all_users",
+    GET_USER_BY_ID: "get_user_by_id",
+    GET_USER_DEVICE_TOKEN: "get_user_device_token",
     VERIFY_REGISTER_OTP: "verify_register_otp",
     VERIFY_FORGOT_OTP: "verify_forgot_otp",
     RESEND_OTP: "resend_otp",

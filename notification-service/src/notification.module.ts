@@ -4,16 +4,27 @@ import { NotificationService } from './notification.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Notification } from './notification.model';
+import { REDIS_CREDENTIALS } from '../../shared/constants';
+import { MICRO_SERVICES } from '../../shared/constants';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-      //import .env file
-      ConfigModule.forRoot({
-        isGlobal: true,
-        envFilePath: '.env'
-      }),
-     // Sequelize Configuration
-     SequelizeModule.forRootAsync({
+    //import .env file
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    }),
+    // Redis Microservice Client
+    ClientsModule.register([
+      {
+        name: MICRO_SERVICES.USERS_SERVICE,
+        transport: Transport.REDIS,
+        options: REDIS_CREDENTIALS,
+      },
+    ]),
+    // Sequelize Configuration
+    SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -29,9 +40,9 @@ import { Notification } from './notification.model';
     }),
 
     // Sequelize Models
-    SequelizeModule.forFeature([Notification]),
+    SequelizeModule.forFeature([Notification])
   ],
   controllers: [NotificationController],
   providers: [NotificationService],
 })
-export class NotificationModule {}
+export class NotificationModule { }
