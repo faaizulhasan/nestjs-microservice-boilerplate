@@ -24,4 +24,10 @@ export class Setting extends Model<SettingInterface, SettingInterface> {
     allowNull: false
   })
   type: string;
+  
+  @Column({
+    type: DataType.STRING,
+    allowNull: true
+  })
+  url: string;
 } 

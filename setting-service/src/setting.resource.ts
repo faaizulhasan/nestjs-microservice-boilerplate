@@ -6,6 +6,8 @@ export class SettingResource {
             id: record.id,
             title: record.title,
             text: record.text,
+            type: record.type,
+            url: record.url,
             created_at: record.createdAt
         };
     }

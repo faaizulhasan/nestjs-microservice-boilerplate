@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class SettingDto {
     
@@ -9,5 +9,9 @@ export class SettingDto {
     @IsString()
     @IsNotEmpty()
     text: string;
+    
+    @IsOptional()
+    @IsString()
+    url?: string;
 
 }
