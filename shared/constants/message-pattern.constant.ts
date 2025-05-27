@@ -27,3 +27,7 @@ export const NOTIFICATION_MESSAGE_PATTERNS = {
     MARK_SINGLE_READ: "mark_single_read",
     SEND_NOTIFICATION: "send_notification"
 }
+export const SETTING_MESSAGE_PATTERNS = {
+    GET_SETTING_BY_TYPE: "get_setting_by_type",
+    UPDATE_SETTING: "update_setting"
+}

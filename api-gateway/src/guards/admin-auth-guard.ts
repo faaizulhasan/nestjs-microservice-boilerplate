@@ -1,17 +1,17 @@
-import { CanActivate, ExecutionContext, Inject, Injectable, } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
-import { API_TOKEN_TYPES, JWT_SECRET, MICRO_SERVICES, ROLES, USER_MESSAGE_PATTERNS } from "../../../shared/constants";
-import { ClientProxy } from "@nestjs/microservices";
-import { lastValueFrom } from "rxjs";
-import { CustomUnauthorizedException } from "../../../shared/exceptions/custom-unauthorized.exception";
+import {CanActivate, ExecutionContext, Inject, Injectable,} from '@nestjs/common';
+import {JwtService} from '@nestjs/jwt';
+import {Request} from 'express';
+import {API_TOKEN_TYPES, JWT_SECRET, MICRO_SERVICES, ROLES, USER_MESSAGE_PATTERNS} from "../../../shared/constants";
+import {ClientProxy} from "@nestjs/microservices";
+import {lastValueFrom} from "rxjs";
+import {CustomUnauthorizedException} from "../../../shared/exceptions/custom-unauthorized.exception";
 
 @Injectable()
-export class ApiAuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanActivate {
     constructor(
         private jwtService: JwtService,
         @Inject(MICRO_SERVICES.USERS_SERVICE) private client: ClientProxy
-    ) { }
+        ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
@@ -29,19 +29,19 @@ export class ApiAuthGuard implements CanActivate {
             let user = await lastValueFrom(this.client.send(USER_MESSAGE_PATTERNS.VERIFY_TOKEN, {
                 token: token,
                 type: API_TOKEN_TYPES.ACCESS,
-                role: ROLES.USER
+                role: ROLES.ADMIN
             }));
-            if (!user) {
+            if (!user){
                 throw new CustomUnauthorizedException("Invalid Token");
             }
-            if (user.is_blocked) {
+            if(user.is_blocked){
                 throw new CustomUnauthorizedException("Account is blocked");
             }
-            if (!user.is_activated) {
+            if(!user.is_activated){
                 throw new CustomUnauthorizedException("Account is not activated");
             }
             request['user'] = user;
-        } catch (err) {
+        } catch(err) {
             throw new CustomUnauthorizedException(err.message);
         }
         return true;

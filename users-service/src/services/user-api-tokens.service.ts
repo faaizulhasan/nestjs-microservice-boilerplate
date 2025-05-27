@@ -1,13 +1,13 @@
-import {Injectable} from '@nestjs/common';
-import {InjectModel} from "@nestjs/sequelize";
-import {BaseService} from "../../../shared/base/base-service";
-import {UserApiToken} from "../models/user-api-tokens.model";
-import {JwtService} from "@nestjs/jwt";
-import {API_TOKEN_TYPES} from "../../../shared/constants";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from "@nestjs/sequelize";
+import { BaseService } from "../../../shared/base/base-service";
+import { UserApiToken } from "../models/user-api-tokens.model";
+import { JwtService } from "@nestjs/jwt";
+import { API_TOKEN_TYPES, ROLES } from "../../../shared/constants";
 import { Op } from 'sequelize';
 import { User } from '../models/users.model';
 @Injectable()
-export class UserApiTokensService extends BaseService{
+export class UserApiTokensService extends BaseService {
     constructor(
         @InjectModel(UserApiToken) private userApiTokenModel: typeof UserApiToken,
         @InjectModel(User) private userModel: typeof User,
@@ -15,7 +15,7 @@ export class UserApiTokensService extends BaseService{
     ) {
         super(UserApiToken);
     }
-    async create(data: {type: string,user_id: number, device_type: string,device_token: string}){
+    async create(data: { type: string, user_id: number, device_type: string, device_token: string }) {
         const token = await this.jwtService.sign({ sub: data.user_id });
         /* delete previous api token */
         await this.userApiTokenModel.destroy({
@@ -34,21 +34,33 @@ export class UserApiTokensService extends BaseService{
         });
         return token;
     }
-    async verifyToken(token, type = API_TOKEN_TYPES.ACCESS){
+    async verifyToken(token, type = API_TOKEN_TYPES.ACCESS, role = ROLES.USER) {
         const api_token = await this.findRecordByCondition({
             api_token: token,
             type: type
         });
-        return api_token;
+        if (api_token) {
+            const user = await this.userModel.findOne({
+                where: {
+                    id: api_token.user_id,
+                    user_type: role
+                }
+            });
+            console.log("user:",user);
+            if (user) {
+                return api_token;
+            }
+        }
+        return null;
     }
-    async getUserDeviceToken(user_id: number){
+    async getUserDeviceToken(user_id: number) {
         const check_user = await this.userModel.findOne({
             where: {
                 id: user_id,
                 push_notification: 1
             }
         });
-        if(!check_user){
+        if (!check_user) {
             return null;
         }
         const api_token = await this.findRecordByCondition({

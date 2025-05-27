@@ -169,9 +169,9 @@ export class UsersController extends BaseController{
   }
 
   @MessagePattern(USER_MESSAGE_PATTERNS.VERIFY_TOKEN)
-  async verifyAuthToken(@Payload() data: {token: string, type: string}) {
+  async verifyAuthToken(@Payload() data: {token: string, type: string, role: string}) {
     try {
-      const verifyToken = await this.userApiTokensService.verifyToken(data.token,data.type);
+      const verifyToken = await this.userApiTokensService.verifyToken(data.token,data.type,data.role);
       if (!verifyToken){
         return false;
       }

@@ -13,6 +13,14 @@ export abstract class BaseController {
         this.service = Service;
     }
     async successResponse(data: any = null, message = 'Success', status = HttpStatus.OK) {
+        if(!data){
+            return {
+                statusCode: status,
+                success: true,
+                message,
+                data: null
+            }
+        }
         if (this.resource && this.collection) {
             if (Array.isArray(data)) {
                 data = data.map((item) => this.resource.toResponse(item, this.request));

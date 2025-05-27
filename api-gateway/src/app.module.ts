@@ -5,6 +5,7 @@ import {UserProxyController} from "./user-proxy.controller";
 import {JWT_EXPIRY, JWT_SECRET, MICRO_SERVICES, REDIS_CREDENTIALS} from "../../shared/constants";
 import {JwtModule} from "@nestjs/jwt";
 import { NotificationProxyController } from './notification-proxy.controller';
+import { SettingProxyController } from './setting-proxy.controller';
 @Module({
   imports: [
     ClientsModule.register([
@@ -17,6 +18,11 @@ import { NotificationProxyController } from './notification-proxy.controller';
           name: MICRO_SERVICES.NOTIFICATION_SERVICE,
           transport: Transport.REDIS,
           options: REDIS_CREDENTIALS,
+        },
+        {
+          name: MICRO_SERVICES.SETTING_SERVICE,
+          transport: Transport.REDIS,
+          options: REDIS_CREDENTIALS,
         }
     ]),
     JwtModule.register({
@@ -24,7 +30,7 @@ import { NotificationProxyController } from './notification-proxy.controller';
       signOptions: { expiresIn: JWT_EXPIRY },
     }),
   ],
-  controllers: [UserProxyController, NotificationProxyController],
+  controllers: [UserProxyController, NotificationProxyController, SettingProxyController],
   providers: [AppService],
 })
 export class AppModule {}
