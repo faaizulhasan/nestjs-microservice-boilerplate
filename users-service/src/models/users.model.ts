@@ -1,6 +1,7 @@
 import {Column, DataType, Model, Table} from 'sequelize-typescript';
 import {UserCreationAttributes, UserInterface} from "../../../shared/interfaces/user.interface";
 import {getFileUrl} from "../../../shared/helpers";
+import { v4 as uuidv4 } from 'uuid';
 
 @Table({
     tableName: 'users',
@@ -8,6 +9,13 @@ import {getFileUrl} from "../../../shared/helpers";
     paranoid: true
 })
 export class User extends Model<UserInterface,UserCreationAttributes> {
+    @Column({
+        type: DataType.STRING(100),
+        allowNull: false,
+        defaultValue: uuidv4()
+    })
+    slug: string;
+
     @Column({
         type: DataType.STRING(100),
         allowNull: false

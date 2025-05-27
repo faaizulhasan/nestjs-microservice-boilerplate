@@ -2,6 +2,7 @@ export class UserResource {
     static toResponse(record,request) {
         return {
             id: record.id,
+            slug: record.slug,
             user_type: record.user_type,
             first_name: record.first_name,
             last_name: record.last_name,
