@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start:all": "concurrently \"npm run start:dev --prefix api-gateway\" \"npm run start:dev --prefix users-service\""
+    "start:all": "concurrently \"npm run start:dev --prefix api-gateway\" \"npm run start:dev --prefix users-service\" \"npm run start:dev --prefix notification-service\" \"npm run start:dev --prefix setting-service\""
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

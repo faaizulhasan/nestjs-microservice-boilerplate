@@ -1,4 +1,5 @@
 export const REDIS_CREDENTIALS = {
     host: "localhost",
-    port: 6379
+    port: 6379,
+    keyPrefix: 'dropn:'
 };
