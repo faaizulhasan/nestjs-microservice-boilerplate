@@ -17,3 +17,11 @@ export const USER_MESSAGE_PATTERNS = {
     SOCIAL_LOGIN: "social_login",
     UPDATE_DEVICE_TOKEN: "update_device_token"
 };
+
+export const NOTIFICATION_MESSAGE_PATTERNS = {
+    GET_ALL_NOTIFICATIONS: "get_all_notifications",
+    GET_UNREAD_COUNT: "get_unread_count",
+    MARK_ALL_READ: "mark_all_read",
+    MARK_SINGLE_READ: "mark_single_read",
+    SEND_NOTIFICATION: "send_notification"
+}
