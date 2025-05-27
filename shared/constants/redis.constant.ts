@@ -1,5 +1,9 @@
+import { config } from "dotenv";
+
+config();
+
 export const REDIS_CREDENTIALS = {
-    host: "localhost",
-    port: 6379,
-    keyPrefix: 'dropn:'
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT || "6379"),
+    keyPrefix: process.env.REDIS_KEY_PREFIX
 };
