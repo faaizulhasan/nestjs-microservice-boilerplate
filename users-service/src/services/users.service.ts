@@ -265,7 +265,6 @@ export class UsersService extends BaseService{
 
     async checkTransferCapability(request){
         const accountInfo: any = await lastValueFrom(this.paymentServiceClient.send(STRIPE_MESSAGE_PATTERNS.CHECK_CAPABILITY, {account_id: request.query.account_id}));
-        console.log("accountInfo:",accountInfo);
         const has_capabilities: boolean = accountInfo.capabilities.transfers === "active" ? true : false;
         if(has_capabilities){
             await this.userModel.update({

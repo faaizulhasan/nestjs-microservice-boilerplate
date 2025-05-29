@@ -8,6 +8,7 @@ import { NotificationProxyController } from './notification-proxy.controller';
 import { SettingProxyController } from './setting-proxy.controller';
 import { PaymentProxyController } from './payment-proxy.controller';
 import { WebhookProxyController } from './webhook-proxy.controller';
+import { MediaProxyController } from './media-proxy.controller';
 @Module({
   imports: [
     ClientsModule.register([
@@ -42,7 +43,8 @@ import { WebhookProxyController } from './webhook-proxy.controller';
     NotificationProxyController,
     SettingProxyController,
     PaymentProxyController,
-    WebhookProxyController
+    WebhookProxyController,
+    MediaProxyController
   ],
   providers: [AppService],
 })
