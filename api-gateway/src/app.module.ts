@@ -6,6 +6,7 @@ import {JWT_EXPIRY, JWT_SECRET, MICRO_SERVICES, REDIS_CREDENTIALS} from "../../s
 import {JwtModule} from "@nestjs/jwt";
 import { NotificationProxyController } from './notification-proxy.controller';
 import { SettingProxyController } from './setting-proxy.controller';
+import { PaymentProxyController } from './payment-proxy.controller';
 @Module({
   imports: [
     ClientsModule.register([
@@ -23,6 +24,11 @@ import { SettingProxyController } from './setting-proxy.controller';
           name: MICRO_SERVICES.SETTING_SERVICE,
           transport: Transport.REDIS,
           options: REDIS_CREDENTIALS,
+        },
+        {
+          name: MICRO_SERVICES.PAYMENT_SERVICE,
+          transport: Transport.REDIS,
+          options: REDIS_CREDENTIALS,
         }
     ]),
     JwtModule.register({
@@ -30,7 +36,7 @@ import { SettingProxyController } from './setting-proxy.controller';
       signOptions: { expiresIn: JWT_EXPIRY },
     }),
   ],
-  controllers: [UserProxyController, NotificationProxyController, SettingProxyController],
+  controllers: [UserProxyController, NotificationProxyController, SettingProxyController, PaymentProxyController],
   providers: [AppService],
 })
 export class AppModule {}

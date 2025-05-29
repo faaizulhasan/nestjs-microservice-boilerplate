@@ -1,21 +1,24 @@
-import {Injectable} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "../models/users.model";
 import * as bcrypt from 'bcrypt';
-import {API_TOKEN_TYPES, LOGIN_TYPE, ROLES} from "../../../shared/constants";
+import {API_TOKEN_TYPES, LOGIN_TYPE, MICRO_SERVICES, ROLES} from "../../../shared/constants";
 import {UserOtpService} from "./user-otps.service";
 import {BaseService} from "../../../shared/base/base-service";
 import {Op} from "sequelize";
 import {UserApiTokensService} from "./user-api-tokens.service";
 import {extractFields} from "../../../shared/helpers";
-import { log } from 'console';
+import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
+import { STRIPE_MESSAGE_PATTERNS } from '../../../shared/constants/message-pattern.constant';
 
 @Injectable()
 export class UsersService extends BaseService{
     constructor(
         @InjectModel(User) private userModel: any,
         private readonly userOtpService: UserOtpService,
-        private readonly userApiTokensService: UserApiTokensService
+        private readonly userApiTokensService: UserApiTokensService,
+        @Inject(MICRO_SERVICES.PAYMENT_SERVICE) private readonly paymentServiceClient: ClientProxy
     ) {
         super(User);
     }
@@ -46,6 +49,10 @@ export class UsersService extends BaseService{
         };
      
         const user = await this.userModel.create(extractFields(userPayload, this.getFields()));
+        /* create customer in stripe */
+        const customer = await lastValueFrom(this.paymentServiceClient.send(STRIPE_MESSAGE_PATTERNS.CREATE_CUSTOMER, {email: data.email}));
+        /* update user stripe customer id */
+        await this.userModel.update({stripe_customer_id: customer.id}, {where: {id: user.id}});
         /* create otp and send mail*/
         await this.userOtpService.create(data);
 
@@ -100,6 +107,10 @@ export class UsersService extends BaseService{
             };
 
             user = await this.userModel.create(userPayload);
+            /* create customer in stripe */
+            const customer = await lastValueFrom(this.paymentServiceClient.send(STRIPE_MESSAGE_PATTERNS.CREATE_CUSTOMER, {email: data.email}));
+            /* update user stripe customer id */
+            await this.userModel.update({stripe_customer_id: customer.id}, {where: {id: user.id}});
         }
 
         // Generate API token

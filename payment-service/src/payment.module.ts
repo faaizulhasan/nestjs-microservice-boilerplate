@@ -4,7 +4,12 @@ import { REDIS_CREDENTIALS } from '../../shared/constants';
 import { MICRO_SERVICES } from '../../shared/constants';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { UserCardsModule } from './user-cards/user-cards.module';
+import { StripeModule } from './stripe/stripe.module';
+import { UserCard } from './user-cards/user-cards.model';
+import { UserCardsService } from './user-cards/user-cards.service';
+import { StripeService } from './stripe/stripe.service';
+import { UserCardsController } from './user-cards/user-cards.controller';
 @Module({
   imports: [
     //import .env file
@@ -37,7 +42,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
 
     // Sequelize Models
-    SequelizeModule.forFeature([])
+    SequelizeModule.forFeature([UserCard]),
+    UserCardsModule,
+    StripeModule
   ],
   controllers: [],
   providers: [],

@@ -40,6 +40,11 @@ import {
         transport: Transport.REDIS,
         options: REDIS_CREDENTIALS,
       },
+      {
+        name: MICRO_SERVICES.PAYMENT_SERVICE,
+        transport: Transport.REDIS,
+        options: REDIS_CREDENTIALS,
+      },
     ]),
 
      // Sequelize Configuration

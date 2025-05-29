@@ -44,9 +44,9 @@ export class UserApiTokensService extends BaseService {
                 where: {
                     id: api_token.user_id,
                     user_type: role
-                }
+                },
+                raw: true
             });
-            console.log("user:",user);
             if (user) {
                 return api_token;
             }

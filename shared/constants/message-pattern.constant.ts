@@ -31,3 +31,15 @@ export const SETTING_MESSAGE_PATTERNS = {
     GET_SETTING_BY_TYPE: "get_setting_by_type",
     UPDATE_SETTING: "update_setting"
 }
+
+export const PAYMENT_MESSAGE_PATTERNS = {
+    CREATE_USER_CARD: "create_user_card",
+    GET_ALL_USER_CARDS: "get_all_user_cards",
+    GET_USER_CARD_BY_ID: "get_user_card_by_id",
+    DELETE_USER_CARD: "delete_user_card"
+}
+
+export const STRIPE_MESSAGE_PATTERNS = {
+    CREATE_CUSTOMER: "create_customer"
+}
+

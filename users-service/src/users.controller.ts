@@ -176,6 +176,7 @@ export class UsersController extends BaseController{
         return false;
       }
       const user = await this.usersService.showRecord(verifyToken.user_id);
+    
       return user;
     }catch (e) {
       console.log(e);
