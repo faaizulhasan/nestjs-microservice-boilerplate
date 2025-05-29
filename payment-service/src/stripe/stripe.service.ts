@@ -75,7 +75,12 @@ export class StripeService  {
     let accountId = stripeConnectAccountId;
 
     if (!accountId) {
-      const account = await this.stripe.accounts.create({ type: 'express' });
+      const account = await this.stripe.accounts.create({ 
+        type: 'express',
+        metadata: {
+          user_id: userId
+        } 
+      });
       accountId = account.id;
     }
 

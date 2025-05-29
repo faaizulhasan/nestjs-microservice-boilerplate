@@ -18,8 +18,7 @@ export class StripeController extends BaseController {
     @MessagePattern(STRIPE_MESSAGE_PATTERNS.CHECK_CAPABILITY)
     async checkCapability(@Payload() payload: { account_id: string }) {
         const accountInfo: any = await this.stripeService.getAccountInfo(payload.account_id);
-        const has_capabilities = accountInfo.capabilities.transfers === "active" ? true : false;
-        return has_capabilities;
+        return accountInfo;
     }
     @MessagePattern(STRIPE_MESSAGE_PATTERNS.GENERATE_CONNECT_ACCOUNT_LINK)
     async generateConnectAccountLink(@Payload() request): Promise<any> {
