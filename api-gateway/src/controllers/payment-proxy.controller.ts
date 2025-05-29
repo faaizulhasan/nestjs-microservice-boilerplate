@@ -4,6 +4,7 @@ import { MICRO_SERVICES, PAYMENT_MESSAGE_PATTERNS, STRIPE_MESSAGE_PATTERNS } fro
 import { ApiAuthGuard } from "../guards/api-auth-guard";
 import { CreateUserCardDto } from "../../../shared/dtos/create-user-card.dto";
 import { Param } from "@nestjs/common";
+import { WithdrawDto } from "../../../shared/dtos/withdraw.dto";
 @Controller('payment')
 export class PaymentProxyController {
     constructor(@Inject(MICRO_SERVICES.PAYMENT_SERVICE) private client: ClientProxy) { }
@@ -45,7 +46,7 @@ export class PaymentProxyController {
     @Get('/get-wallet')
     async getWallet(@Request() req) {
         let payload = {
-            body: req.body,         
+            body: req.body,
             query: req.query,
             params: req.params,
             user: req.user
@@ -56,12 +57,23 @@ export class PaymentProxyController {
     @Get('/generate-connect-account-link')
     async generateConnectAccountLink(@Request() req) {
         let payload = {
-            body: req.body,         
+            body: req.body,
             query: req.query,
             params: req.params,
             user: req.user
         }
         return this.client.send(STRIPE_MESSAGE_PATTERNS.GENERATE_CONNECT_ACCOUNT_LINK, payload);
+    }
+    @UseGuards(ApiAuthGuard)
+    @Post('/withdraw-amount')
+    async withdrawAmount(@Body() body: WithdrawDto, @Request() req) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(PAYMENT_MESSAGE_PATTERNS.WITHDRAW_AMOUNT, payload);
     }
 
 }

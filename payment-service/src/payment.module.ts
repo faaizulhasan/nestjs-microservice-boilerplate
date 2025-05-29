@@ -9,6 +9,7 @@ import { StripeModule } from './stripe/stripe.module';
 import { UserCard } from './user-cards/user-cards.model';
 import { UserWalletModule } from './user-wallet/user-wallet.module';
 import { UserWallet } from './user-wallet/user-wallet.model';
+import { TransactionsModule } from './transactions/transactions.module';
 @Module({
   imports: [
     //import .env file
@@ -42,6 +43,7 @@ import { UserWallet } from './user-wallet/user-wallet.model';
     UserCardsModule,
     StripeModule,
     UserWalletModule,
+    TransactionsModule,
   ],
   controllers: [],
   providers: [],
