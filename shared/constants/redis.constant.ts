@@ -5,5 +5,6 @@ config();
 export const REDIS_CREDENTIALS = {
     host: process.env.REDIS_HOST,
     port: parseInt(process.env.REDIS_PORT || "6379"),
+    password: process.env.REDIS_PASSWORD,
     keyPrefix: process.env.REDIS_KEY_PREFIX
 };
