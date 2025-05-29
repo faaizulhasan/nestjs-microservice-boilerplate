@@ -1,8 +1,8 @@
 import {Body, Controller, Delete, Get, Inject, Patch, Post, Request, UseGuards, Param} from "@nestjs/common";
 import {ClientProxy} from "@nestjs/microservices";
-import {MICRO_SERVICES, SETTING_MESSAGE_PATTERNS} from "../../shared/constants";
-import { SettingDto } from "../../shared/dtos/setting.dto";
-import { AdminAuthGuard } from "./guards/admin-auth-guard";
+import {MICRO_SERVICES, SETTING_MESSAGE_PATTERNS} from "../../../shared/constants";
+import { SettingDto } from "../../../shared/dtos/setting.dto";
+import { AdminAuthGuard } from "../guards/admin-auth-guard";
 
 @Controller('setting')
 export class SettingProxyController {

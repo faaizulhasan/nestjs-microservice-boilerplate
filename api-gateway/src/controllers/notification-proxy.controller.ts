@@ -1,8 +1,8 @@
 import {Body, Controller, Delete, Get, Inject, Patch, Post, Request, UseGuards} from "@nestjs/common";
 import {ClientProxy} from "@nestjs/microservices";
-import {MICRO_SERVICES, NOTIFICATION_MESSAGE_PATTERNS} from "../../shared/constants";
-import {ApiAuthGuard} from "./guards/api-auth-guard";
-import { SendNotificationDto } from "../../shared/dtos/send-notification.dto";
+import {MICRO_SERVICES, NOTIFICATION_MESSAGE_PATTERNS} from "../../../shared/constants";
+import {ApiAuthGuard} from "../guards/api-auth-guard";
+import { SendNotificationDto } from "../../../shared/dtos/send-notification.dto";
 @Controller('notification')
 export class NotificationProxyController {
     constructor(@Inject(MICRO_SERVICES.NOTIFICATION_SERVICE) private client: ClientProxy) {}

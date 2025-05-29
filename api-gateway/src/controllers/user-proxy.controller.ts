@@ -1,16 +1,16 @@
 import {Body, Controller, Delete, Get, Inject, Patch, Post, Request, UseGuards} from "@nestjs/common";
 import {ClientProxy} from "@nestjs/microservices";
-import {LoginDto} from "../../shared/dtos/login.dto";
-import {RegisterDto} from "../../shared/dtos/register.dto";
-import {MICRO_SERVICES, USER_MESSAGE_PATTERNS} from "../../shared/constants";
-import {VerifyOtpDto} from "../../shared/dtos/verify-otp.dto";
-import {ResendOtpDto} from "../../shared/dtos/resend-otp.dto";
-import {ResetPasswordDto} from "../../shared/dtos/reset-password.dto";
-import {ResetAuthGuard} from "./guards/reset-auth-guard";
-import {ChangePasswordDto} from "../../shared/dtos/change-password.dto";
-import {ApiAuthGuard} from "./guards/api-auth-guard";
-import {SocialLoginDto} from "../../shared/dtos/social-login.dto";
-import {UpdateDeviceTokenDto} from "../../shared/dtos/update-device-token.dto";
+import {LoginDto} from "../../../shared/dtos/login.dto";
+import {RegisterDto} from "../../../shared/dtos/register.dto";
+import {MICRO_SERVICES, USER_MESSAGE_PATTERNS} from "../../../shared/constants";
+import {VerifyOtpDto} from "../../../shared/dtos/verify-otp.dto";
+import {ResendOtpDto} from "../../../shared/dtos/resend-otp.dto";
+import {ResetPasswordDto} from "../../../shared/dtos/reset-password.dto";
+import {ResetAuthGuard} from "../guards/reset-auth-guard";
+import {ChangePasswordDto} from "../../../shared/dtos/change-password.dto";
+import {ApiAuthGuard} from "../guards/api-auth-guard";
+import {SocialLoginDto} from "../../../shared/dtos/social-login.dto";
+import {UpdateDeviceTokenDto} from "../../../shared/dtos/update-device-token.dto";
 
 @Controller('user')
 export class UserProxyController {

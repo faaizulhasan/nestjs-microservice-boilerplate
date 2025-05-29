@@ -6,8 +6,8 @@ import { PAYMENT_MESSAGE_PATTERNS } from '../../../shared/constants/message-patt
 import { UserWalletResource } from './user-wallet.resource';
 @Controller()
 export class UserWalletController extends BaseController {
-  constructor(private readonly userWalletService: UserWalletService) { 
-    super(UserWalletResource,UserWalletService);
+  constructor(private readonly userWalletService: UserWalletService) {
+    super(UserWalletResource, UserWalletService);
   }
 
   @MessagePattern(PAYMENT_MESSAGE_PATTERNS.GET_USER_WALLET)
@@ -22,4 +22,9 @@ export class UserWalletController extends BaseController {
       return this.sendError(error.message);
     }
   }
-}
+  @MessagePattern(PAYMENT_MESSAGE_PATTERNS.UPDATE_USER_WALLET)
+  async updateUserWallet(@Payload() payload: { user_id: number, amount: number, type: number }): Promise<any> {
+    const userWallet = await this.userWalletService.updateUserWallet(payload);
+    return userWallet;
+  }
+} 

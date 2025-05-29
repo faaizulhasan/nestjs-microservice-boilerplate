@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Inject, Patch, Post, Request, UseGuards } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { MICRO_SERVICES, PAYMENT_MESSAGE_PATTERNS, STRIPE_MESSAGE_PATTERNS } from "../../shared/constants";
-import { ApiAuthGuard } from "./guards/api-auth-guard";
-import { CreateUserCardDto } from "../../shared/dtos/create-user-card.dto";
+import { MICRO_SERVICES, PAYMENT_MESSAGE_PATTERNS, STRIPE_MESSAGE_PATTERNS } from "../../../shared/constants";
+import { ApiAuthGuard } from "../guards/api-auth-guard";
+import { CreateUserCardDto } from "../../../shared/dtos/create-user-card.dto";
 import { Param } from "@nestjs/common";
 @Controller('payment')
 export class PaymentProxyController {

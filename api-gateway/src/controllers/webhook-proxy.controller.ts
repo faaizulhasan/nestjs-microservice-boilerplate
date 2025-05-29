@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Inject, Patch, Post, Render, Request, UseGuards } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { MICRO_SERVICES, USER_MESSAGE_PATTERNS } from "../../shared/constants";
+import { MICRO_SERVICES, USER_MESSAGE_PATTERNS } from "../../../shared/constants";
 
 @Controller('webhook')
 export class WebhookProxyController {

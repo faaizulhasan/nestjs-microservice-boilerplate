@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from "@nestjs/microservices";
-import { UserProxyController } from "./user-proxy.controller";
+import { UserProxyController } from "./controllers/user-proxy.controller";
 import { JWT_EXPIRY, JWT_SECRET, MICRO_SERVICES, REDIS_CREDENTIALS } from "../../shared/constants";
 import { JwtModule } from "@nestjs/jwt";
-import { NotificationProxyController } from './notification-proxy.controller';
-import { SettingProxyController } from './setting-proxy.controller';
-import { PaymentProxyController } from './payment-proxy.controller';
-import { WebhookProxyController } from './webhook-proxy.controller';
-import { MediaProxyController } from './media-proxy.controller';
+import { NotificationProxyController } from './controllers/notification-proxy.controller';
+import { SettingProxyController } from './controllers/setting-proxy.controller';
+import { PaymentProxyController } from './controllers/payment-proxy.controller';
+import { WebhookProxyController } from './controllers/webhook-proxy.controller';
+import { MediaProxyController } from './controllers/media-proxy.controller';
 @Module({
   imports: [
     ClientsModule.register([
