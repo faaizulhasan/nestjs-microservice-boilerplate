@@ -36,7 +36,8 @@ export const PAYMENT_MESSAGE_PATTERNS = {
     CREATE_USER_CARD: "create_user_card",
     GET_ALL_USER_CARDS: "get_all_user_cards",
     GET_USER_CARD_BY_ID: "get_user_card_by_id",
-    DELETE_USER_CARD: "delete_user_card"
+    DELETE_USER_CARD: "delete_user_card",
+    GET_USER_WALLET: "get_user_wallet"
 }
 
 export const STRIPE_MESSAGE_PATTERNS = {

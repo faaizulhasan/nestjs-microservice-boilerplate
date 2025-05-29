@@ -7,9 +7,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserCardsModule } from './user-cards/user-cards.module';
 import { StripeModule } from './stripe/stripe.module';
 import { UserCard } from './user-cards/user-cards.model';
-import { UserCardsService } from './user-cards/user-cards.service';
-import { StripeService } from './stripe/stripe.service';
-import { UserCardsController } from './user-cards/user-cards.controller';
+import { UserWalletModule } from './user-wallet/user-wallet.module';
+import { UserWallet } from './user-wallet/user-wallet.model';
 @Module({
   imports: [
     //import .env file
@@ -40,11 +39,9 @@ import { UserCardsController } from './user-cards/user-cards.controller';
         synchronize: true,
       }),
     }),
-
-    // Sequelize Models
-    SequelizeModule.forFeature([UserCard]),
     UserCardsModule,
-    StripeModule
+    StripeModule,
+    UserWalletModule,
   ],
   controllers: [],
   providers: [],

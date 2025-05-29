@@ -30,7 +30,7 @@ export abstract class BaseController {
         }
         if (this.pagination) {
             const limit = this.request?.query?.limit ? parseInt(this.request?.query?.limit) : PER_PAGE_LIMIT;
-            const total = this.request.count;
+            const total = this.request?.count || 0;
             const page = this.request?.query?.page ? parseInt(this.request?.query?.page) : 1;
             const total_page = Math.ceil(
                 total / limit
