@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Connect - Failure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffeded;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .failure-icon {
+            color: #dc3545;
+            font-size: 4em;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <i class="fas fa-times-circle failure-icon"></i>
+    <h1>Connection Failed!</h1>
+    <p>Unfortunately, we could not connect your Stripe account. Please try again.</p>
+    <button class="button" onclick="window.location.href='http://www.dropn.com'">Retry</button>
+</div>
+</body>
+</html>

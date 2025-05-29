@@ -169,6 +169,6 @@ export class UserProxyController {
             user: req.user
         }
         return this.client.send(USER_MESSAGE_PATTERNS.GET_ALL_USERS, payload);
-    }
-
+    }    
+    
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Connect - Success</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .success-icon {
+            color: #28a745;
+            font-size: 4em;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <i class="fas fa-check-circle success-icon"></i>
+    <h1>Connection Successful!</h1>
+    <p>Your Stripe account has been successfully connected.</p>
+    <button class="button" onclick="window.location.href='http://www.dropn.com'">Go to Dashboard</button>
+</div>
+</body>
+</html>

@@ -1,12 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { BadRequestException, ValidationError, ValidationPipe } from "@nestjs/common";
+import { BadRequestException, RequestMethod, ValidationError, ValidationPipe } from "@nestjs/common";
 import { GlobalExceptionFilter } from './global-exception-handler';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-    app.setGlobalPrefix('api/v1');
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+    app.useStaticAssets(join(__dirname, 'public'));
+    app.setBaseViewsDir(join(__dirname, 'views'));
+    app.setViewEngine('hbs');
+
+    app.setGlobalPrefix('api/v1',{
+        exclude: [
+            { path: 'webhook/(.*)', method: RequestMethod.ALL }
+          ],
+    });
     app.useGlobalFilters(new GlobalExceptionFilter());
 
     app.useGlobalPipes(
@@ -23,7 +34,7 @@ async function bootstrap() {
             },
         }),
     );
-
+        
     await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -283,4 +283,34 @@ export class UsersController extends BaseController{
       return this.sendError(e.message);
     }
   }
+  @MessagePattern(USER_MESSAGE_PATTERNS.RETURN_CONNECT_ACCOUNT_FAILURE)
+  async returnConnectAccountFailure(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      this.request = request;
+      console.log("request:",request);
+      return this.successResponse({},"Connect account failure returned successfully");
+      //await this.usersService.returnConnectAccountFailure(request);
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  } 
+  @MessagePattern(USER_MESSAGE_PATTERNS.RETURN_CONNECT_ACCOUNT)
+  async returnConnectAccount(@Payload() request) {
+    try {
+      this.pagination = false;
+      this.collection = false;
+      this.request = request;
+     
+      if(request?.query?.account_id){
+        await this.usersService.checkTransferCapability(request);
+      }
+      return this.successResponse({},"Connect account returned successfully");
+    }catch (e) {
+      console.log(e);
+      return this.sendError(e.message);
+    }
+  }   
 }

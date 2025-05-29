@@ -81,8 +81,8 @@ export class StripeService  {
 
     const accountLink = await this.stripe.accountLinks.create({
       account: accountId,
-      refresh_url: `${BASE_URL}web/return-connect-account-failure?user_id=${userId}`,
-      return_url: `${BASE_URL}web/return-connect-account?user_id=${userId}&account_id=${accountId}`,
+      refresh_url: `${BASE_URL}webhook/return-connect-account-failure?user_id=${userId}`,
+      return_url: `${BASE_URL}webhook/return-connect-account?user_id=${userId}&account_id=${accountId}`,
       type: 'account_onboarding',
     });
 

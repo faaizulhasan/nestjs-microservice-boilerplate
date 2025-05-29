@@ -17,7 +17,9 @@ export const USER_MESSAGE_PATTERNS = {
     LOGOUT: "logout",
     DELETE_ACCOUNT: "delete_account",
     SOCIAL_LOGIN: "social_login",
-    UPDATE_DEVICE_TOKEN: "update_device_token"
+    UPDATE_DEVICE_TOKEN: "update_device_token",
+    RETURN_CONNECT_ACCOUNT_FAILURE: "return_connect_account_failure",
+    RETURN_CONNECT_ACCOUNT: "return_connect_account"
 };
 
 export const NOTIFICATION_MESSAGE_PATTERNS = {
@@ -41,6 +43,8 @@ export const PAYMENT_MESSAGE_PATTERNS = {
 }
 
 export const STRIPE_MESSAGE_PATTERNS = {
-    CREATE_CUSTOMER: "create_customer"
+    CREATE_CUSTOMER: "create_customer",
+    GENERATE_CONNECT_ACCOUNT_LINK: "generate_connect_account_link",
+    CHECK_CAPABILITY: "check_capability"
 }
 

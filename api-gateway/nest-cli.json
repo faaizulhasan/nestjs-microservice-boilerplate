@@ -4,6 +4,13 @@
   "sourceRoot": "src",
   "entryFile": "api-gateway/src/main.js",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "assets": [
+      {
+        "include": "views",
+        "outDir": "dist/api-gateway/src",
+        "watchAssets": true
+      }
+    ]
   }
 }

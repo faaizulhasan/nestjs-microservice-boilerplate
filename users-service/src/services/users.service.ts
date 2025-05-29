@@ -262,4 +262,19 @@ export class UsersService extends BaseService{
         if (!isMatch) throw new Error("Incorrect Password");
         return user;
     }
+
+    async checkTransferCapability(request){
+        const hasCapability: boolean = await lastValueFrom(this.paymentServiceClient.send(STRIPE_MESSAGE_PATTERNS.CHECK_CAPABILITY, {account_id: request.query.account_id}));
+        if(hasCapability){
+            await this.userModel.update({
+                connect_account_id: request.query.account_id,
+                transfer_capabilities: 1
+            },{
+                where: {
+                    id: request.query.user_id
+                }
+            });
+        }
+        return true;
+    }
 }

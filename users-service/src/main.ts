@@ -7,6 +7,7 @@ async function bootstrap() {
     transport: Transport.REDIS,
     options: REDIS_CREDENTIALS
   });
+  
   await app.listen();
 }
 bootstrap();
