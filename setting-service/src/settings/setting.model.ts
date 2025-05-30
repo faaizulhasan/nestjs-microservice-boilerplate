@@ -1,5 +1,5 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { SettingInterface } from '../../shared/interfaces/setting.interface';
+import { SettingInterface } from '../../../shared/interfaces/setting.interface';
 
 @Table({
   tableName: 'settings',

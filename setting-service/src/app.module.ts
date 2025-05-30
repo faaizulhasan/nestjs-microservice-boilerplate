@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { SettingController } from './setting.controller';
-import { SettingService } from './setting.service';
+
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Setting } from './setting.model';
 import { REDIS_CREDENTIALS } from '../../shared/constants';
 import { MICRO_SERVICES } from '../../shared/constants';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PagesModule } from './pages/pages.module';
+import { SettingModule } from './settings/setting.module';
 
 @Module({
   imports: [
@@ -39,12 +38,10 @@ import { PagesModule } from './pages/pages.module';
         synchronize: true,
       }),
     }),
-
-    // Sequelize Models
-    SequelizeModule.forFeature([Setting]),
+    SettingModule,
     PagesModule
   ],
-  controllers: [SettingController],
-  providers: [SettingService],
+  controllers: [],
+  providers: [],
 })
-export class SettingModule { }
+export class AppModule { }

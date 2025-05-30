@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Setting } from './setting.model';
-import { BaseService } from '../../shared/base/base-service';
+import { BaseService } from '../../../shared/base/base-service';
 
 @Injectable()
 export class SettingService extends BaseService {
