@@ -9,6 +9,8 @@ import { SettingProxyController } from './controllers/setting-proxy.controller';
 import { PaymentProxyController } from './controllers/payment-proxy.controller';
 import { WebhookProxyController } from './controllers/webhook-proxy.controller';
 import { MediaProxyController } from './controllers/media-proxy.controller';
+import { ConfigModule } from '@nestjs/config';
+
 import Redis from 'ioredis';
 const redis = new Redis(REDIS_CREDENTIALS);
 
@@ -47,6 +49,11 @@ redis.on('error', (err) => {
       secret: JWT_SECRET,
       signOptions: { expiresIn: JWT_EXPIRY },
     }),
+    //import .env file
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    })
   ],
   controllers: [
     UserProxyController,
