@@ -76,4 +76,16 @@ export class PaymentProxyController {
         return this.client.send(PAYMENT_MESSAGE_PATTERNS.WITHDRAW_AMOUNT, payload);
     }
 
+    //Transaction routes
+    @UseGuards(ApiAuthGuard)
+    @Get('/get-transactions')
+    async getTransactions(@Request() req) {
+        let payload = {
+            body: req.body, 
+            query: req.query,
+            params: req.params,
+            user: req.user
+        }
+        return this.client.send(PAYMENT_MESSAGE_PATTERNS.GET_TRANSACTIONS, payload);
+    }   
 }

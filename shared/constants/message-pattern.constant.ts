@@ -41,7 +41,8 @@ export const PAYMENT_MESSAGE_PATTERNS = {
     DELETE_USER_CARD: "delete_user_card",
     GET_USER_WALLET: "get_user_wallet",
     UPDATE_USER_WALLET: "update_user_wallet",
-    WITHDRAW_AMOUNT: "withdraw_amount"
+    WITHDRAW_AMOUNT: "withdraw_amount",
+    GET_TRANSACTIONS: "get_transactions"
 }
 
 export const STRIPE_MESSAGE_PATTERNS = {
