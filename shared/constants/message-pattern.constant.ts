@@ -30,8 +30,10 @@ export const NOTIFICATION_MESSAGE_PATTERNS = {
     SEND_NOTIFICATION: "send_notification"
 }
 export const SETTING_MESSAGE_PATTERNS = {
-    GET_SETTING_BY_TYPE: "get_setting_by_type",
-    UPDATE_SETTING: "update_setting"
+    GET_SETTING: "get_setting",
+    UPDATE_SETTING: "update_setting",
+    GET_PAGE: "get_page",
+    GET_ALL_PAGES: "get_all_pages"
 }
 
 export const PAYMENT_MESSAGE_PATTERNS = {

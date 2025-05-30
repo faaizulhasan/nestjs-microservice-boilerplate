@@ -4,30 +4,39 @@ import {MICRO_SERVICES, SETTING_MESSAGE_PATTERNS} from "../../../shared/constant
 import { SettingDto } from "../../../shared/dtos/setting.dto";
 import { AdminAuthGuard } from "../guards/admin-auth-guard";
 
-@Controller('setting')
+@Controller()
 export class SettingProxyController {
     constructor(@Inject(MICRO_SERVICES.SETTING_SERVICE) private client: ClientProxy) {}
 
-    @Get(':type')
+    @Get('/setting')
     async getSetting(@Request() req: any) {
         let payload = {
             body: req.body,
             query: req.query,
             params: req.params,
-            user: req.user
         }
-        return this.client.send(SETTING_MESSAGE_PATTERNS.GET_SETTING_BY_TYPE, payload);
+        return this.client.send(SETTING_MESSAGE_PATTERNS.GET_SETTING, payload);
     }
 
-    @UseGuards(AdminAuthGuard)
-    @Patch(':id')
-    async updateSetting(@Request() req: any, @Body() body: SettingDto) {
+
+    //pages routes
+    @Get('pages/:slug')
+    async getPage(@Request() req: any, @Param('slug') slug: string) {
         let payload = {
             body: req.body,
             query: req.query,
-            params: req.params,
-            user: req.user
+            params: req.params
         }
-        return this.client.send(SETTING_MESSAGE_PATTERNS.UPDATE_SETTING, payload);
+        return this.client.send(SETTING_MESSAGE_PATTERNS.GET_PAGE, payload);
     }
+    @Get('pages')
+    async getAllPages(@Request() req: any) {
+        let payload = {
+            body: req.body,
+            query: req.query,
+            params: req.params
+        }
+        return this.client.send(SETTING_MESSAGE_PATTERNS.GET_ALL_PAGES, payload);
+    }
+    
 }

@@ -7,6 +7,7 @@ import { Setting } from './setting.model';
 import { REDIS_CREDENTIALS } from '../../shared/constants';
 import { MICRO_SERVICES } from '../../shared/constants';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { PagesModule } from './pages/pages.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     }),
 
     // Sequelize Models
-    SequelizeModule.forFeature([Setting])
+    SequelizeModule.forFeature([Setting]),
+    PagesModule
   ],
   controllers: [SettingController],
   providers: [SettingService],

@@ -10,8 +10,8 @@ export class SettingService extends BaseService {
   ) {
     super(Setting);
   }
-  async getSettingByType(type: string) {
-    return this.findRecordByCondition({ type: type });
+  async getSetting() {
+    return this.findRecordByCondition({ deletedAt: null });
   }
   async updateSetting(payload: any) {
     return this.settingModel.update(payload.body, { where: { id: payload.params.id } });

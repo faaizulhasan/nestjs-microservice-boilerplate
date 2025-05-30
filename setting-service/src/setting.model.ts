@@ -14,20 +14,22 @@ export class Setting extends Model<SettingInterface, SettingInterface> {
   title: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.FLOAT(20,2),
     allowNull: false
   })
-  text: string;
-
+  gst: number;
+ 
   @Column({
-    type: DataType.STRING(100),
-    allowNull: false
+    type: DataType.FLOAT(20,2),
+    allowNull: false,
+    defaultValue: 0
   })
-  type: string;
-  
+  platform_fee: number;
+ 
   @Column({
-    type: DataType.STRING,
-    allowNull: true
+    type: DataType.FLOAT(20,2),
+    allowNull: false,
+    defaultValue: 0
   })
-  url: string;
+  platform_commission: number;
 } 

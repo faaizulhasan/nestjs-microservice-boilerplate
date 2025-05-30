@@ -1,13 +1,14 @@
 import { text } from "stream/consumers";
 
-export class SettingResource {
+export class PagesResource {
     static toResponse(record, request) {
         return {
             id: record.id,
             title: record.title,
-            gst: record.gst,
-            platform_fee: record.platform_fee,
-            platform_commission: record.platform_commission
+            slug: record.slug,
+            content: record.content,
+            url: record.url,
+            created_at: record.createdAt
         };
     }
 }
