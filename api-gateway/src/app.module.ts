@@ -9,6 +9,16 @@ import { SettingProxyController } from './controllers/setting-proxy.controller';
 import { PaymentProxyController } from './controllers/payment-proxy.controller';
 import { WebhookProxyController } from './controllers/webhook-proxy.controller';
 import { MediaProxyController } from './controllers/media-proxy.controller';
+import Redis from 'ioredis';
+const redis = new Redis(REDIS_CREDENTIALS);
+
+redis.on('connect', () => {
+  console.log('✅ Redis connected');
+});
+
+redis.on('error', (err) => {
+  console.error('❌ Redis error:', err);
+});
 @Module({
   imports: [
     ClientsModule.register([
